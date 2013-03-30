@@ -69,6 +69,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        mViewPager.setCurrentItem(1, false);
     }
 
     @Override
@@ -99,23 +101,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        CentralFragment central;
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            central = new CentralFragment();
         }
 
         @Override
         public Fragment getItem(int i) {
-            if (i == 0)
-                return central;
-
-            Fragment fragment = new DummySectionFragment();
-            Bundle args = new Bundle();
-            args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, i + 1);
-            fragment.setArguments(args);
-            return fragment;
+            switch (i)
+            {
+                case 1: return new CentralFragment();
+                default:
+                    Fragment fragment = new DummySectionFragment();
+                    Bundle args = new Bundle();
+                    args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, i + 1);
+                    fragment.setArguments(args);
+                    return fragment;
+            }
         }
 
         @Override
