@@ -3,9 +3,9 @@
     <string name="placeholder">placeholder</string>
 
     <string name="app_name">DiceRoller</string>
-    <string name="title_section3">Section 3</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section1">Section 1</string>
+    <string name="statistics_title">Statistics</string>
+    <string name="central_title">Central</string>
+    <string name="chooser_title">Chooser</string>
     <string name="roll">Roll!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Dice Roller</string>
