@@ -32,8 +32,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
-
-    @Override
+@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
