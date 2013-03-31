@@ -5,7 +5,7 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ToggleButton;
 import android.widget.ArrayAdapter;
 import android.os.Bundle;
 
@@ -34,8 +34,10 @@ public class SetChooserFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater =  getActivity().getLayoutInflater();
             View row = inflater.inflate(R.layout.chooser_row, parent, false);
-            TextView main_description = (TextView) row.findViewById(R.id.main_description);
+            ToggleButton main_description = (ToggleButton) row.findViewById(R.id.main_description);
             main_description.setText(dice_sets.get(position).name());
+            main_description.setTextOn(dice_sets.get(position).name());
+            main_description.setTextOff(dice_sets.get(position).name());
             return row;
         }
     }
