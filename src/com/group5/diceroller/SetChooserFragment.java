@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ToggleButton;
+import android.widget.Button;
 import android.widget.ArrayAdapter;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ public class SetChooserFragment extends ListFragment {
 
     public SetChooserFragment() {
         dice_sets = DiceSet.LoadAllFromDB();
+        dice_sets.add(null); // add sentinal value to denote the "add a set" button
     }
 
     @Override
@@ -32,12 +34,21 @@ public class SetChooserFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater =  getActivity().getLayoutInflater();
-            View row = inflater.inflate(R.layout.chooser_row, parent, false);
-            ToggleButton main_description = (ToggleButton) row.findViewById(R.id.main_description);
-            main_description.setText(dice_sets.get(position).name());
-            main_description.setTextOn(dice_sets.get(position).name());
-            main_description.setTextOff(dice_sets.get(position).name());
+            View row;
+
+            // Last item in the list is the "add a set button"
+            if (position == dice_sets.size()-1) {
+                row = new Button(getActivity());
+                ((Button) row).setText("Add a Set");
+            } else {
+                LayoutInflater inflater =  getActivity().getLayoutInflater();
+                row = inflater.inflate(R.layout.chooser_row, parent, false);
+
+                ToggleButton main_description = (ToggleButton) row.findViewById(R.id.main_description);
+                main_description.setText(dice_sets.get(position).name());
+                main_description.setTextOn(dice_sets.get(position).name());
+                main_description.setTextOff(dice_sets.get(position).name());
+            }
             return row;
         }
     }
