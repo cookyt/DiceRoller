@@ -52,10 +52,7 @@ public class SetChooserFragment extends ListFragment {
 
                 ToggleButton main_description = (ToggleButton) row.findViewById(R.id.main_description);
 
-                String label = state.diceSets().get(position).name();
-                if (label.equals(""))
-                    label = state.diceSets().get(position).description();
-
+                String label = state.diceSets().get(position).label();
                 main_description.setText(label);
                 main_description.setTextOn(label);
                 main_description.setTextOff(label);

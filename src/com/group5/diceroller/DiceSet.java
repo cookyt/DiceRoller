@@ -93,4 +93,15 @@ public class DiceSet {
     public boolean equals(DiceSet other) {
         return false;
     }
+
+    /**
+     * Returns human-readable label for this set.
+     * @return The name if it is available, the description if not.
+     */
+    public String label() {
+        String label = name();
+        if (label.equals(""))
+            label = description();
+        return label;
+    }
 }
