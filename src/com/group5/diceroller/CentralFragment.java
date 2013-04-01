@@ -47,19 +47,11 @@ public class CentralFragment extends Fragment {
      * defaults to the global empty_selection string in the resources.
      */
     public void updateSelectionText() {
-        StringBuilder ret = new StringBuilder();
-        for (DiceSet set : state.activeSelection()) {
-            ret.append(set.label());
-            ret.append("; "); // seperate with semicolons
-        }
-        if (ret.length() > 0) {
-            //remove last semicolon before setting
-            ret.delete(ret.length()-2, ret.length()-1);
-            selection_text.setText(ret.toString());
-        } else {
-            // Set it to the empty_selection string if no dice in selection
+        String des = state.activeSelection().toString();
+        if (des.length() > 0)
+            selection_text.setText(des);
+        else
             selection_text.setText(R.string.empty_selection);
-        }
     }
 
     public class RollEvent implements View.OnClickListener {

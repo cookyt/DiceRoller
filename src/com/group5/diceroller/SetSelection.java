@@ -17,6 +17,11 @@ public class SetSelection
     Set<DiceSet> dice_sets;
 
     /**
+     * The delimeter used between DiceSets in SetSelection.toString()
+     */
+    public static final String kDelimeter = "; ";
+
+    /**
      * Constructs an empty SetSelection.
      * TODO implement. Current implementation for testing only.
      */
@@ -55,6 +60,22 @@ public class SetSelection
      */
     public boolean remove(int set_id) {
         return false;
+    }
+
+    /**
+     * Returns a string of the DiceSet's contained in this selection.
+     */
+    public String toString() {
+        StringBuilder ret = new StringBuilder();
+        boolean first = true;
+        for (DiceSet set : this) {
+            if (first)
+                first = false;
+            else
+                ret.append(kDelimeter); // seperate with semicolons
+            ret.append(set.label());
+        }
+        return ret.toString();
     }
 
     /**
