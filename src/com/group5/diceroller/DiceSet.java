@@ -34,8 +34,10 @@ public class DiceSet {
      */
     public static List<DiceSet> LoadAllFromDB() {
         ArrayList<DiceSet> ret = new ArrayList<DiceSet>();
-        for (int i=0; i<10; i++)
+        for (int i=0; i<9; i++)
             ret.add(new DiceSet(i, "Set " + i));
+        DiceSet s = new DiceSet(9, "");
+        ret.add(s);
         return ret;
     }
 
@@ -47,7 +49,7 @@ public class DiceSet {
      * @return A description of this dice set.
      */
     public String description() {
-        return "";
+        return "description";
     }
 
     /**

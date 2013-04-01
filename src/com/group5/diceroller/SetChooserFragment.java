@@ -51,9 +51,14 @@ public class SetChooserFragment extends ListFragment {
                 row = inflater.inflate(R.layout.chooser_row, parent, false);
 
                 ToggleButton main_description = (ToggleButton) row.findViewById(R.id.main_description);
-                main_description.setText(state.diceSets().get(position).name());
-                main_description.setTextOn(state.diceSets().get(position).name());
-                main_description.setTextOff(state.diceSets().get(position).name());
+
+                String label = state.diceSets().get(position).name();
+                if (label.equals(""))
+                    label = state.diceSets().get(position).description();
+
+                main_description.setText(label);
+                main_description.setTextOn(label);
+                main_description.setTextOff(label);
 
                 main_description.setOnClickListener(new ToggleOnClickListener(position));
             }
