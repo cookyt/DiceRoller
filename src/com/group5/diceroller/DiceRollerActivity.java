@@ -1,5 +1,6 @@
 package com.group5.diceroller;
 
+import java.util.List;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -32,6 +33,12 @@ public class DiceRollerActivity extends FragmentActivity implements ActionBar.Ta
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+
+    /**
+     * The list of sets that are available to the user.
+     */
+    List<DiceSet> dice_sets;
+
 @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +76,10 @@ public class DiceRollerActivity extends FragmentActivity implements ActionBar.Ta
                             .setTabListener(this));
         }
 
+        dice_sets = DiceSet.LoadAllFromDB();
+        dice_sets.add(null); // add sentinal value to denote the "add a set" button
+
+        // Move the pager to the center item
         mViewPager.setCurrentItem(1, false);
     }
 
