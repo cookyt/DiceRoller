@@ -39,6 +39,11 @@ public class DiceRollerActivity extends FragmentActivity implements ActionBar.Ta
      */
     List<DiceSet> dice_sets;
 
+    /**
+     * The sets of dice which are rolled when the user clicks "roll".
+     */
+    SetSelection active_selection;
+
 @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +81,13 @@ public class DiceRollerActivity extends FragmentActivity implements ActionBar.Ta
                             .setTabListener(this));
         }
 
+        // Move the pager to the center item
+        mViewPager.setCurrentItem(1, false);
+
         dice_sets = DiceSet.LoadAllFromDB();
         dice_sets.add(null); // add sentinal value to denote the "add a set" button
 
-        // Move the pager to the center item
-        mViewPager.setCurrentItem(1, false);
+        active_selection = new SetSelection();
     }
 
     @Override

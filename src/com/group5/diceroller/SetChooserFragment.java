@@ -43,8 +43,29 @@ public class SetChooserFragment extends ListFragment {
                 main_description.setText(dice_sets.get(position).name());
                 main_description.setTextOn(dice_sets.get(position).name());
                 main_description.setTextOff(dice_sets.get(position).name());
+
+                main_description.setOnClickListener(new ToggleOnClickListener(position));
             }
             return row;
+        }
+    }
+
+    public class ToggleOnClickListener implements View.OnClickListener {
+        DiceSet described_set;
+        DiceRollerActivity activity;
+
+        public ToggleOnClickListener(int position) {
+            activity = (DiceRollerActivity) getActivity();
+            described_set = activity.dice_sets.get(position);
+        }
+
+        public void onClick(View v) {
+            ToggleButton btn = (ToggleButton) v;
+            if (btn.isChecked()) {
+                activity.active_selection.add(described_set);
+            } else {
+                activity.active_selection.remove(described_set.id);
+            }
         }
     }
 }
