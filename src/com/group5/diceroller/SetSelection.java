@@ -1,6 +1,7 @@
 package com.group5.diceroller;
 
 import java.util.Set;
+import java.util.HashSet;
 import java.util.Iterator;
 
 public class SetSelection
@@ -16,6 +17,17 @@ public class SetSelection
     Set<DiceSet> dice_sets;
 
     /**
+     * Constructs an empty SetSelection.
+     * TODO implement. Current implementation for testing only.
+     */
+    public SetSelection() {
+        // For hashset to be useable, boolean equals(Object) and int hashCode()
+        // need to be implemented. TreeSet might be nicer for this job due to
+        // the way it auto-sorts anything put in it.
+        dice_sets = new HashSet<DiceSet>();
+    }
+
+    /**
      * Randomizes the dice in this SetSelection.
      * TODO implement
      */
@@ -24,13 +36,14 @@ public class SetSelection
 
     /**
      * Adds the given DiceSet to this selection.
+     * TODO implement Current implementation for testing only
      * 
      * @param set The DiceSet to add
      * @return True if the set was added, false otherwise.
-     * TODO implement
      */
     public boolean add(DiceSet set) {
-        return false;
+        dice_sets.add(set);
+        return true;
     }
 
     /**

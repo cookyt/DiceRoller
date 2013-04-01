@@ -13,6 +13,7 @@ import android.os.Bundle;
 
 public class SetChooserFragment extends ListFragment {
     DiceRollerState state;
+    OnSelectionChangedListener selection_changed_listener;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -29,6 +30,12 @@ public class SetChooserFragment extends ListFragment {
             state = (DiceRollerState) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement DiceRollerState");
+        }
+
+        try {
+            selection_changed_listener = (OnSelectionChangedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnSelectionChangedListener");
         }
     }
 
@@ -77,6 +84,7 @@ public class SetChooserFragment extends ListFragment {
             } else {
                 state.activeSelection().remove(described_set.id);
             }
+            selection_changed_listener.onSelectionChanged();
         }
     }
 }

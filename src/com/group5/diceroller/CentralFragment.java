@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.os.Bundle;
 
 public class CentralFragment extends Fragment {
     OnDiceRolledListener rolled_listener;
     DiceRollerState state;
+    TextView selection_text;
 
     @Override
     public void onAttach(Activity activity) {
@@ -34,8 +36,30 @@ public class CentralFragment extends Fragment {
             Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.central, container, false);
         Button roll_button = (Button) layout.findViewById(R.id.roll_button);
+        selection_text = (TextView) layout.findViewById(R.id.selection_text);
         roll_button.setOnClickListener(new RollEvent());
         return layout;
+    }
+
+    /**
+     * Re-evaluates the dice in the active selection and sets the label for the
+     * central view accordingly. If there are no dice in the selection, it
+     * defaults to the global empty_selection string in the resources.
+     */
+    public void updateSelectionText() {
+        StringBuilder ret = new StringBuilder();
+        for (DiceSet set : state.activeSelection()) {
+            ret.append(set.label());
+            ret.append("; "); // seperate with semicolons
+        }
+        if (ret.length() > 0) {
+            //remove last semicolon before setting
+            ret.delete(ret.length()-2, ret.length()-1);
+            selection_text.setText(ret.toString());
+        } else {
+            // Set it to the empty_selection string if no dice in selection
+            selection_text.setText(R.string.empty_selection);
+        }
     }
 
     public class RollEvent implements View.OnClickListener {

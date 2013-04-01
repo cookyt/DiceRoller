@@ -20,7 +20,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class DiceRollerActivity extends FragmentActivity
-    implements ActionBar.TabListener, OnDiceRolledListener, DiceRollerState {
+    implements ActionBar.TabListener, OnDiceRolledListener,
+    OnSelectionChangedListener, DiceRollerState {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -45,10 +46,19 @@ public class DiceRollerActivity extends FragmentActivity
      */
     SetSelection active_selection;
 
+    SetChooserFragment chooser;
+    CentralFragment central;
+    StatisticsFragment statistics;
+
 @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        chooser    = new SetChooserFragment();
+        central    = new CentralFragment();
+        statistics = new StatisticsFragment();
+
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -64,12 +74,7 @@ public class DiceRollerActivity extends FragmentActivity
         // When swiping between different sections, select the corresponding tab.
         // We can also use ActionBar.Tab#select() to do this if we have a reference to the
         // Tab.
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
+        mViewPager.setOnPageChangeListener(new PageChangeListener());
 
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -120,6 +125,11 @@ public class DiceRollerActivity extends FragmentActivity
     }
 
     @Override
+    public void onSelectionChanged() {
+        central.updateSelectionText();
+    }
+
+    @Override
     public List<DiceSet> diceSets() {
         return dice_sets;
     }
@@ -129,12 +139,25 @@ public class DiceRollerActivity extends FragmentActivity
         return active_selection;
     }
 
+
+    class PageChangeListener extends ViewPager.SimpleOnPageChangeListener {
+        ActionBar actionbar;
+        public PageChangeListener() {
+            actionbar = getActionBar();
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            actionbar.setSelectedNavigationItem(position);
+        }
+    }
+
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
      * sections of the app.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -143,9 +166,9 @@ public class DiceRollerActivity extends FragmentActivity
         public Fragment getItem(int i) {
             switch (i)
             {
-                case 0: return new SetChooserFragment();
-                case 1: return new CentralFragment();
-                case 2: return new StatisticsFragment();
+                case 0: return chooser;
+                case 1: return central;
+                case 2: return statistics;
             }
             return null;
         }
