@@ -2,6 +2,7 @@ package com.group5.diceroller;
 
 import java.util.List;
 import android.support.v4.app.ListFragment;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.os.Bundle;
 
 public class SetChooserFragment extends ListFragment {
+    DiceRollerState state;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -18,31 +21,39 @@ public class SetChooserFragment extends ListFragment {
         setListAdapter(adapter);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            state = (DiceRollerState) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + "Must implement DiceRollerState");
+        }
+    }
 
     public class DiceSelectionAdapter extends ArrayAdapter<DiceSet> {
 
         public DiceSelectionAdapter() {
-            super(getActivity(), R.layout.chooser_row, ((DiceRollerActivity) getActivity()).dice_sets);
+            super(getActivity(), R.layout.chooser_row, state.diceSets());
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View row;
-            DiceRollerActivity mActivity = (DiceRollerActivity) getActivity();
-            List<DiceSet> dice_sets = mActivity.dice_sets;
 
             // Last item in the list is the "add a set button"
-            if (position == dice_sets.size()-1) {
-                row = new Button(mActivity);
+            if (position == state.diceSets().size()-1) {
+                row = new Button(getActivity());
                 ((Button) row).setText("Add a Set");
             } else {
-                LayoutInflater inflater =  mActivity.getLayoutInflater();
+                LayoutInflater inflater =  getActivity().getLayoutInflater();
                 row = inflater.inflate(R.layout.chooser_row, parent, false);
 
                 ToggleButton main_description = (ToggleButton) row.findViewById(R.id.main_description);
-                main_description.setText(dice_sets.get(position).name());
-                main_description.setTextOn(dice_sets.get(position).name());
-                main_description.setTextOff(dice_sets.get(position).name());
+                main_description.setText(state.diceSets().get(position).name());
+                main_description.setTextOn(state.diceSets().get(position).name());
+                main_description.setTextOff(state.diceSets().get(position).name());
 
                 main_description.setOnClickListener(new ToggleOnClickListener(position));
             }
@@ -52,19 +63,17 @@ public class SetChooserFragment extends ListFragment {
 
     public class ToggleOnClickListener implements View.OnClickListener {
         DiceSet described_set;
-        DiceRollerActivity activity;
 
         public ToggleOnClickListener(int position) {
-            activity = (DiceRollerActivity) getActivity();
-            described_set = activity.dice_sets.get(position);
+            described_set = state.diceSets().get(position);
         }
 
         public void onClick(View v) {
             ToggleButton btn = (ToggleButton) v;
             if (btn.isChecked()) {
-                activity.active_selection.add(described_set);
+                state.activeSelection().add(described_set);
             } else {
-                activity.active_selection.remove(described_set.id);
+                state.activeSelection().remove(described_set.id);
             }
         }
     }

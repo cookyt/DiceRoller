@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class DiceRollerActivity extends FragmentActivity
-    implements ActionBar.TabListener, OnDiceRolledListener {
+    implements ActionBar.TabListener, OnDiceRolledListener, DiceRollerState {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -117,6 +117,16 @@ public class DiceRollerActivity extends FragmentActivity
     public void onDiceRolled() {
         // play possible animations/sound here
         mViewPager.setCurrentItem(2);
+    }
+
+    @Override
+    public List<DiceSet> diceSets() {
+        return dice_sets;
+    }
+
+    @Override
+    public SetSelection activeSelection() {
+        return active_selection;
     }
 
     /**

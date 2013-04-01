@@ -10,14 +10,22 @@ import android.os.Bundle;
 
 public class CentralFragment extends Fragment {
     OnDiceRolledListener rolled_listener;
+    DiceRollerState state;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         try {
             rolled_listener = (OnDiceRolledListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + "Must implement OnDiceRolledListener");
+        }
+
+        try {
+            state = (DiceRollerState) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + "Must implement DiceRollerState");
         }
     }
 
@@ -32,8 +40,7 @@ public class CentralFragment extends Fragment {
 
     public class RollEvent implements View.OnClickListener {
         public void onClick(View v) {
-            DiceRollerActivity activity = (DiceRollerActivity) getActivity();
-            activity.active_selection.roll();
+            state.activeSelection().roll();
             rolled_listener.onDiceRolled();
         }
     }
