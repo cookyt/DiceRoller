@@ -19,7 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class DiceRollerActivity extends FragmentActivity implements ActionBar.TabListener {
+public class DiceRollerActivity extends FragmentActivity
+    implements ActionBar.TabListener, OnDiceRolledListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -110,6 +111,12 @@ public class DiceRollerActivity extends FragmentActivity implements ActionBar.Ta
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    @Override
+    public void onDiceRolled() {
+        // play possible animations/sound here
+        mViewPager.setCurrentItem(2);
     }
 
     /**
