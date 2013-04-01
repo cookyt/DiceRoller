@@ -19,13 +19,13 @@ public class CentralFragment extends Fragment {
         try {
             rolled_listener = (OnDiceRolledListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "Must implement OnDiceRolledListener");
+            throw new ClassCastException(activity.toString() + " must implement OnDiceRolledListener");
         }
 
         try {
             state = (DiceRollerState) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "Must implement DiceRollerState");
+            throw new ClassCastException(activity.toString() + " must implement DiceRollerState");
         }
     }
 

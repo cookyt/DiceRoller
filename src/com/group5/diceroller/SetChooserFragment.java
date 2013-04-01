@@ -28,7 +28,7 @@ public class SetChooserFragment extends ListFragment {
         try {
             state = (DiceRollerState) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "Must implement DiceRollerState");
+            throw new ClassCastException(activity.toString() + " must implement DiceRollerState");
         }
     }
 
