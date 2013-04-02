@@ -11,5 +11,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Dice Roller</string>
     <string name="empty_selection">No Dice!</string>
+    <string name="last_roll">Last Roll</string>
+    <string name="all_rolls">All Rolls</string>
 
 </resources>

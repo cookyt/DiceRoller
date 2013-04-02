@@ -109,37 +109,30 @@ public class DiceRollerActivity extends FragmentActivity
 
     
 
-    @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
-    @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    @Override
     public void onDiceRolled() {
         // play possible animations/sound here
         mViewPager.setCurrentItem(2);
     }
 
-    @Override
     public void onSelectionChanged() {
         central.updateSelectionText();
     }
 
-    @Override
     public List<DiceSet> diceSets() {
         return dice_sets;
     }
 
-    @Override
     public SetSelection activeSelection() {
         return active_selection;
     }
