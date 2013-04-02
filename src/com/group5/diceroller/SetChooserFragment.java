@@ -16,6 +16,10 @@ public class SetChooserFragment extends ListFragment {
     OnSelectionChangedListener selection_changed_listener;
 
     @Override
+    /**
+     * Creates an adapter for this list and attaches it when the activity is
+     * created.
+     */
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         DiceSelectionAdapter adapter = new DiceSelectionAdapter();
@@ -23,6 +27,10 @@ public class SetChooserFragment extends ListFragment {
     }
 
     @Override
+    /**
+     * Assures that the containing activity implements the DiceRollerState and
+     * OnSelectionChangedListener interfaces.
+     */
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -39,6 +47,10 @@ public class SetChooserFragment extends ListFragment {
         }
     }
 
+    /**
+     * Adapter for the list fragment. It adapts elements from the list of
+     * available DiceSets from the containing activity.
+     */
     public class DiceSelectionAdapter extends ArrayAdapter<DiceSet> {
 
         public DiceSelectionAdapter() {
@@ -46,6 +58,16 @@ public class SetChooserFragment extends ListFragment {
         }
 
         @Override
+        /**
+         * Returns the view to be used for the position'th value in the list.
+         * For common element, it uses the chooser_row layout defined in global
+         * resources. For the last element, it generates a large button with
+         * "Add a Set" in it. For this reason, the last element in the list of
+         * DiceSets should be some sort of unused sentinal (null works nicely).
+         *
+         * @param position The position in the list being requested.
+         * @return The view for the requested row.
+         */
         public View getView(int position, View convertView, ViewGroup parent) {
             View row;
 
@@ -70,6 +92,10 @@ public class SetChooserFragment extends ListFragment {
         }
     }
 
+    /**
+     * This listens for a click event on one of the set buttons to add/remove a
+     * set from the current selection.
+     */
     public class ToggleOnClickListener implements View.OnClickListener {
         DiceSet described_set;
 
@@ -77,6 +103,14 @@ public class SetChooserFragment extends ListFragment {
             described_set = state.diceSets().get(position);
         }
 
+        /**
+         * Adds or removes a set from the selection (depending on whether the
+         * button is being checked or unchecked), and calls the
+         * onSelectionChanged callback of the containing activity for the list
+         * fragment
+         *
+         * @param v The button being pressed.
+         */
         public void onClick(View v) {
             ToggleButton btn = (ToggleButton) v;
             if (btn.isChecked()) {

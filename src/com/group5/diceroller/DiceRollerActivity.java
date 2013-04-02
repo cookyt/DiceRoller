@@ -50,7 +50,13 @@ public class DiceRollerActivity extends FragmentActivity
     CentralFragment central;
     StatisticsFragment statistics;
 
-@Override
+    @Override
+    /**
+     * Callback for creating the activity. It Creates the component fragments,
+     * builds the view pager and its adapter, registers the listeners for
+     * changing the current view with action bar tabs, and loads the dice sets
+     * from the database.
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -81,8 +87,7 @@ public class DiceRollerActivity extends FragmentActivity
             // Create a tab with text corresponding to the page title defined by the adapter.
             // Also specify this Activity object, which implements the TabListener interface, as the
             // listener for when this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
+            actionBar.addTab(actionBar.newTab()
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }

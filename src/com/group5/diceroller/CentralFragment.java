@@ -15,6 +15,13 @@ public class CentralFragment extends Fragment {
     TextView selection_text;
 
     @Override
+    /**
+     * Assures that the containing activity implements the OnDiceRolledListener
+     * and DiceRollerState interfaces. Also calls the superclass onAttach to
+     * correctly attach this fragment to the containing activity.
+     *
+     * @param activity The activity which this fragment is being attached to.
+     */
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -32,6 +39,10 @@ public class CentralFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Creates the view for this fragment. It gets its layout from global
+     * resources, and creates the onClick handler for the roll button.
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.central, container, false);
@@ -54,7 +65,17 @@ public class CentralFragment extends Fragment {
             selection_text.setText(R.string.empty_selection);
     }
 
+    /**
+     * Listener for the roll button on the central view.
+     */
     public class RollEvent implements View.OnClickListener {
+        /**
+         * Handles the roll button being clicked. It randomizes the values in
+         * the set selection (by rolling them), and calls the callback
+         * onDiceRolled method in the containing activity of this fragment.
+         *
+         * @param v The roll button.
+         */
         public void onClick(View v) {
             state.activeSelection().roll();
             rolled_listener.onDiceRolled();
