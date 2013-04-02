@@ -3,8 +3,11 @@ package com.group5.diceroller;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class DiceSet {
+public class DiceSet
+    implements Iterable<Dice> {
+
     Set<Dice> dice;
     int id;
     String name;
@@ -92,6 +95,14 @@ public class DiceSet {
      */
     public boolean equals(DiceSet other) {
         return false;
+    }
+
+    /**
+     * Returns an itrator over the dice in this set.
+     * TODO implement. current implementation for testing
+     */
+    public Iterator<Dice> iterator() {
+        return dice.iterator();
     }
 
     /**
