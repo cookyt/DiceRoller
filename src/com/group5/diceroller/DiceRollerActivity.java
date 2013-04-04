@@ -1,6 +1,7 @@
 package com.group5.diceroller;
 
 import java.util.List;
+import java.util.ArrayList;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -45,6 +46,8 @@ public class DiceRollerActivity extends FragmentActivity
      * The sets of dice which are rolled when the user clicks "roll".
      */
     SetSelection active_selection;
+
+    List<SetSelection> roll_history;
 
     SetChooserFragment chooser;
     CentralFragment central;
@@ -99,6 +102,7 @@ public class DiceRollerActivity extends FragmentActivity
         dice_sets.add(null); // add sentinal value to denote the "add a set" button
 
         active_selection = new SetSelection();
+        roll_history = new ArrayList<SetSelection>();
     }
 
     @Override
@@ -122,6 +126,9 @@ public class DiceRollerActivity extends FragmentActivity
 
     public void onDiceRolled() {
         // play possible animations/sound here
+        roll_history.add(new SetSelection(active_selection));
+        active_selection.roll();
+        statistics.update();
         mViewPager.setCurrentItem(2);
     }
 
@@ -135,6 +142,10 @@ public class DiceRollerActivity extends FragmentActivity
 
     public SetSelection activeSelection() {
         return active_selection;
+    }
+
+    public List<SetSelection> rollHistory() {
+        return roll_history;
     }
 
 

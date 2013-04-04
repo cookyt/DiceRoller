@@ -77,7 +77,6 @@ public class CentralFragment extends Fragment {
          * @param v The roll button.
          */
         public void onClick(View v) {
-            state.activeSelection().roll();
             rolled_listener.onDiceRolled();
         }
     }

@@ -33,6 +33,14 @@ public class SetSelection
     }
 
     /**
+     * Copys the given selection (deep copy).
+     * TODO implement. Current implementation for testing only.
+     */
+    public SetSelection(SetSelection set_to_copy) {
+        dice_sets = new HashSet<DiceSet>();
+    }
+
+    /**
      * Randomizes the dice in this SetSelection.
      * TODO implement
      */
