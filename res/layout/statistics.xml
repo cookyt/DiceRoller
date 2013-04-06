@@ -29,12 +29,28 @@
         <ListView
             android:id="@+id/all_rolls_list"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            />
 
     </LinearLayout>
 
-    <include 
-        android:id="@+id/last_roll_view"
-        layout="@layout/statistics_row" />
+    <ScrollView
+        android:id="@+id/last_roll_scroller"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <include
+            android:id="@+id/last_roll_view"
+            layout="@layout/statistics_row" />
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/no_statistics_message"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="@string/no_statistics" />
 
 </LinearLayout>

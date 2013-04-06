@@ -4,14 +4,15 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <ListView
+    <LinearLayout
         android:id="@+id/dice_set_sums_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
-    <GridView
+    <TableLayout
         android:id="@+id/dice_rolls_grid"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
