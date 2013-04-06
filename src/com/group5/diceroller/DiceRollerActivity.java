@@ -102,7 +102,6 @@ public class DiceRollerActivity extends FragmentActivity
         mViewPager.setCurrentItem(1, false);
 
         dice_sets = DiceSet.LoadAllFromDB();
-        dice_sets.add(null); // add sentinal value to denote the "add a set" button
 
         active_selection = new SetSelection();
         roll_history = new ArrayList<SetSelection>();

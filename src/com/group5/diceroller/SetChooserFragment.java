@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ToggleButton;
 import android.widget.Button;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -20,11 +21,16 @@ public class SetChooserFragment extends ListFragment {
     @Override
     /**
      * Creates an adapter for this list and attaches it when the activity is
-     * created.
+     * created. Also adds the "add a set" button to the bottom of the list.
      */
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         DiceSelectionAdapter adapter = new DiceSelectionAdapter();
+
+        Button add_a_set = new Button(getActivity());
+        add_a_set.setText("Add a Set");
+        getListView().addFooterView(add_a_set, null, true);
+
         setListAdapter(adapter);
     }
 
@@ -63,40 +69,41 @@ public class SetChooserFragment extends ListFragment {
         /**
          * Returns the view to be used for the position'th value in the list.
          * For common element, it uses the chooser_row layout defined in global
-         * resources. For the last element, it generates a large button with
-         * "Add a Set" in it. For this reason, the last element in the list of
-         * DiceSets should be some sort of unused sentinal (null works nicely).
-         *
-         * TODO implementation inflates a new view on every call (ineffecient),
-         * should check for convertView==null
+         * resources.
          *
          * @param position The position in the list being requested.
          * @return The view for the requested row.
          */
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row;
-
             Log.i(kTag, "Creating chooser item, pos:" + position);
             // Last item in the list is the "add a set button"
-            if (position == state.diceSets().size()-1) {
-                row = new Button(getActivity());
-                ((Button) row).setText("Add a Set");
-            } else {
+
+            View row = convertView;
+            ToggleButton main_description;
+            if (row == null)
+            {
                 LayoutInflater inflater =  getActivity().getLayoutInflater();
                 row = inflater.inflate(R.layout.chooser_row, parent, false);
 
-                ToggleButton main_description = (ToggleButton) row.findViewById(R.id.main_description);
-
-                DiceSet cur_set = state.diceSets().get(position);
-                String label = cur_set.label();
-
-                main_description.setText(label);
-                main_description.setTextOn(label);
-                main_description.setTextOff(label);
-                main_description.setChecked(state.activeSelection().contains(cur_set));
-
-                main_description.setOnClickListener(new ToggleOnClickListener(position));
+                // ViewHolder trick
+                // see: http://www.youtube.com/watch?v=N6YdwzAvwOA
+                main_description = (ToggleButton) row.findViewById(R.id.main_description);
+                row.setTag(main_description);
             }
+            else
+            {
+                main_description = (ToggleButton) row.getTag();
+            }
+
+            DiceSet cur_set = state.diceSets().get(position);
+            String label = cur_set.label();
+
+            main_description.setText(label);
+            main_description.setTextOn(label);
+            main_description.setTextOff(label);
+            main_description.setChecked(state.activeSelection().contains(cur_set));
+
+            main_description.setOnClickListener(new ToggleOnClickListener(position));
             return row;
         }
     }
