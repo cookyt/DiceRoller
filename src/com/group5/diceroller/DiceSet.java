@@ -37,9 +37,13 @@ public class DiceSet
      */
     public static List<DiceSet> LoadAllFromDB() {
         ArrayList<DiceSet> ret = new ArrayList<DiceSet>();
-        for (int i=0; i<9; i++)
+           // Not sure if this is the correct way to get the number of rows in the database but I think it is,
+           // which I am using as the number of dice sets we have minus 1 for the header row.
+        int numSets = diceSet.getRowCount (); 
+        
+        for (int i=0; i<numSets; i++)               // changed 9 to numSets
             ret.add(new DiceSet(i, "Set " + i));
-        DiceSet s = new DiceSet(9, "");
+        DiceSet s = new DiceSet(numSets, "");       // changed 9 to numSets
         ret.add(s);
         return ret;
     }
@@ -52,7 +56,22 @@ public class DiceSet
      * @return A description of this dice set.
      */
     public String description() {
-        return "description";
+        ArrayList<DiceSet> ret = new ArrayList<DiceSet>();
+        Scanner DiceScanner = new scanner (DiceSet);
+        String desc = "";
+                                
+        // I am using this assuming the database has diceset name, number of that dice, number of sides of that dice, and repeating that till there are no more left.
+         while (DiceSet.hasnextint())
+        {
+            desc = desc + DiceScanner.nextInt;
+            desc = desc + "D"
+            desc = desc + DiceScanner.nextInt;
+            if DiceSet.hasnextint()
+        	desc = desc + ", "
+        }
+        
+        return desc;    						    // changes the hardcoded answer to desc which is a string that should have all of the dice info in it.
+                                                                
     }
 
     /**
