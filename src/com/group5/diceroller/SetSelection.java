@@ -96,4 +96,12 @@ public class SetSelection
     public Iterator<DiceSet> iterator() {
         return dice_sets.iterator();
     }
+
+    /**
+     * Returns the number of sets in this selection.
+     * TODO implement
+     */
+    public int getCount() {
+        return 0;
+    }
 }
