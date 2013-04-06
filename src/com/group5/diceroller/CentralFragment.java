@@ -13,6 +13,7 @@ public class CentralFragment extends Fragment {
     OnDiceRolledListener rolled_listener;
     DiceRollerState state;
     TextView selection_text;
+    Button roll_button;
 
     @Override
     /**
@@ -46,9 +47,13 @@ public class CentralFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.central, container, false);
-        Button roll_button = (Button) layout.findViewById(R.id.roll_button);
         selection_text = (TextView) layout.findViewById(R.id.selection_text);
+
+        roll_button = (Button) layout.findViewById(R.id.roll_button);
         roll_button.setOnClickListener(new RollEvent());
+        if (state.activeSelection().size() == 0)
+            roll_button.setEnabled(false);
+
         return layout;
     }
 
@@ -59,10 +64,14 @@ public class CentralFragment extends Fragment {
      */
     public void updateSelectionText() {
         String des = state.activeSelection().toString();
-        if (des.length() > 0)
+        if (des.length() > 0) {
             selection_text.setText(des);
-        else
+            roll_button.setEnabled(true);
+        }
+        else {
             selection_text.setText(R.string.empty_selection);
+            roll_button.setEnabled(false);
+        }
     }
 
     /**

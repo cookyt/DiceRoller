@@ -108,7 +108,7 @@ public class SetSelection
      * Returns the number of sets in this selection.
      * TODO implement
      */
-    public int getCount() {
-        return 0;
+    public int size() {
+        return dice_sets.size();
     }
 }
