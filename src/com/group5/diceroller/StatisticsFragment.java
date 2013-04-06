@@ -52,8 +52,13 @@ public class StatisticsFragment extends Fragment {
         change_view_button = (ToggleButton) (layout.findViewById(R.id.change_view_button));
         change_view_button.setOnClickListener(new ViewChangeOnClick());
 
-        last_roll = layout.findViewById(R.id.last_roll_view);
         last_roll_scroller = layout.findViewById(R.id.last_roll_scroller);
+        last_roll = layout.findViewById(R.id.last_roll_view);
+
+        ViewHolder holder = new ViewHolder();
+        holder.sums = (LinearLayout) (last_roll.findViewById(R.id.dice_set_sums_list));
+        holder.rolls = (TableLayout) (last_roll.findViewById(R.id.dice_rolls_grid));
+        last_roll.setTag(holder);
 
         all_rolls = (ListView) layout.findViewById(R.id.all_rolls_view);
         all_rolls_adapter = new HistoryAdapter();
@@ -73,22 +78,22 @@ public class StatisticsFragment extends Fragment {
      */
     private void populateStatsRow(View view, SetSelection selection) {
         Log.i(kTag, "Populating last roll view");
+        ViewHolder holder = (ViewHolder) view.getTag();
 
-        LinearLayout sumsview = (LinearLayout) view.findViewById(R.id.dice_set_sums_list);
+        holder.sums.removeAllViews();
         for (DiceSet set : selection) {
             TextView description = new TextView(getActivity().getApplicationContext());
             description.setText(String.format("%s: %d", set.label(), set.sum()));
-            sumsview.addView(description);
+            holder.sums.addView(description);
         }
 
-        TableLayout diceview = (TableLayout) view.findViewById(R.id.dice_rolls_grid);
-        diceview.removeAllViews();
+        holder.rolls.removeAllViews();
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        GridCreator creator = new GridCreator(diceview, 3);
+        GridCreator creator = new GridCreator(holder.rolls, 3);
         for (DiceSet set : selection) {
             for (Dice dice : set) {
                 for (Integer val : dice) {
-                    View die = inflater.inflate(R.layout.dice_box, diceview, false);
+                    View die = inflater.inflate(R.layout.dice_box, holder.rolls, false);
 
                     TextView value_view = (TextView) (die.findViewById(R.id.die_value));
                     value_view.setText("" + val);
@@ -197,9 +202,20 @@ public class StatisticsFragment extends Fragment {
             if (row == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 row = inflater.inflate(R.layout.statistics_row, parent, false);
+
+                ViewHolder holder = new ViewHolder();
+                holder.sums = (LinearLayout) (row.findViewById(R.id.dice_set_sums_list));
+                holder.rolls = (TableLayout) (row.findViewById(R.id.dice_rolls_grid));
+
+                row.setTag(holder);
             }
             populateStatsRow(row, state.rollHistory().get(position));
             return row;
         }
+    }
+
+    static class ViewHolder {
+        LinearLayout sums;
+        TableLayout rolls;
     }
 }
