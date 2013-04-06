@@ -19,20 +19,11 @@
 
     </LinearLayout>
 
-    <LinearLayout 
+    <ListView
         android:id="@+id/all_rolls_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <ListView
-            android:id="@+id/all_rolls_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            />
-
-    </LinearLayout>
+        android:visibility="gone" />
 
     <ScrollView
         android:id="@+id/last_roll_scroller"

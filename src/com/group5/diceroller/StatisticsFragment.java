@@ -12,8 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.ListView;
-import android.widget.GridView;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.util.Log;
 import android.os.Bundle;
 import android.app.Activity;
@@ -23,7 +22,8 @@ public class StatisticsFragment extends Fragment {
 
     ToggleButton change_view_button;
     TextView no_statistics_message;
-    View all_rolls;
+    ListView all_rolls;
+    HistoryAdapter all_rolls_adapter;
     View last_roll;
     View last_roll_scroller;
 
@@ -52,9 +52,12 @@ public class StatisticsFragment extends Fragment {
         change_view_button = (ToggleButton) (layout.findViewById(R.id.change_view_button));
         change_view_button.setOnClickListener(new ViewChangeOnClick());
 
-        all_rolls = layout.findViewById(R.id.all_rolls_view);
         last_roll = layout.findViewById(R.id.last_roll_view);
         last_roll_scroller = layout.findViewById(R.id.last_roll_scroller);
+
+        all_rolls = (ListView) layout.findViewById(R.id.all_rolls_view);
+        all_rolls_adapter = new HistoryAdapter();
+        all_rolls.setAdapter(all_rolls_adapter);
 
         chooseChangeButtonEnable();
         return layout;
@@ -79,6 +82,7 @@ public class StatisticsFragment extends Fragment {
         }
 
         TableLayout diceview = (TableLayout) view.findViewById(R.id.dice_rolls_grid);
+        diceview.removeAllViews();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         GridCreator creator = new GridCreator(diceview, 3);
         for (DiceSet set : selection) {
@@ -95,6 +99,7 @@ public class StatisticsFragment extends Fragment {
                     creator.add(die);
                 }
             }
+            creator.newRow();
         }
     }
 
@@ -128,6 +133,7 @@ public class StatisticsFragment extends Fragment {
     public void update() {
         chooseChangeButtonEnable();
         populateStatsRow(last_roll, state.rollHistory().get(0));
+        all_rolls_adapter.notifyDataSetChanged();
     }
 
     /**
@@ -178,6 +184,22 @@ public class StatisticsFragment extends Fragment {
                 last_roll_scroller.setVisibility(View.GONE);
                 all_rolls.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    class HistoryAdapter extends ArrayAdapter<SetSelection> {
+        public HistoryAdapter() {
+            super(getActivity(), R.layout.statistics_row, state.rollHistory());
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = convertView;
+            if (row == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                row = inflater.inflate(R.layout.statistics_row, parent, false);
+            }
+            populateStatsRow(row, state.rollHistory().get(position));
+            return row;
         }
     }
 }

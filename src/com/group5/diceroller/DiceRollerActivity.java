@@ -2,6 +2,7 @@ package com.group5.diceroller;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -102,9 +103,12 @@ public class DiceRollerActivity extends FragmentActivity
         mViewPager.setCurrentItem(1, false);
 
         dice_sets = DiceSet.LoadAllFromDB();
-
         active_selection = new SetSelection();
-        roll_history = new ArrayList<SetSelection>();
+
+        // have to add/remove from 2 ends, so a linked list is better here.
+        // (TODO fixed size history would suggest ring buffered array for
+        // speed, not critical for now)
+        roll_history = new LinkedList<SetSelection>();
     }
 
     @Override
@@ -128,7 +132,10 @@ public class DiceRollerActivity extends FragmentActivity
 
     public void onDiceRolled() {
         // play possible animations/sound here
-        roll_history.add(new SetSelection(active_selection));
+        roll_history.add(0, new SetSelection(active_selection));
+        if (roll_history.size() > 20)
+            roll_history.remove(20);
+
         active_selection.roll();
         statistics.update();
         mViewPager.setCurrentItem(2);
