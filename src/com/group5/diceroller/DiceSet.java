@@ -2,6 +2,7 @@ package com.group5.diceroller;
 
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -12,7 +13,6 @@ public class DiceSet
     int id;
     String name;
     int modifier;
-    int last_sum;
 
     /**
      * Construts a DiceSet with the given id, name, and modifier.
@@ -20,6 +20,7 @@ public class DiceSet
     public DiceSet(int id, String name, int modifier) {
         this.name = name;
         this.modifier = modifier;
+        dice = new TreeSet<Dice>();
     }
 
     /**
@@ -130,6 +131,14 @@ public class DiceSet
      * TODO implement
      */
     public int getCount() {
+        return 0;
+    }
+
+    /**
+     * Returns the sum of the dice in this set.
+     * TODO implement
+     */
+    public int sum() {
         return 0;
     }
 

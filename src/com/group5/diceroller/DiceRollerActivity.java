@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.util.Log;
 
 public class DiceRollerActivity extends FragmentActivity
     implements ActionBar.TabListener, OnDiceRolledListener,
@@ -63,6 +64,8 @@ public class DiceRollerActivity extends FragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.i("DiceRollerActivity", "creating...");
 
         chooser    = new SetChooserFragment();
         central    = new CentralFragment();

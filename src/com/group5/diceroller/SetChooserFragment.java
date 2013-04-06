@@ -15,6 +15,7 @@ import android.util.Log;
 public class SetChooserFragment extends ListFragment {
     DiceRollerState state;
     OnSelectionChangedListener selection_changed_listener;
+    public static final String kTag = "SetChooserFrag";
 
     @Override
     /**
@@ -75,7 +76,7 @@ public class SetChooserFragment extends ListFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View row;
 
-            Log.i("Creating chooser item", "pos:" + position);
+            Log.i(kTag, "Creating chooser item, pos:" + position);
             // Last item in the list is the "add a set button"
             if (position == state.diceSets().size()-1) {
                 row = new Button(getActivity());

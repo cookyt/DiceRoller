@@ -71,6 +71,13 @@ public class SetSelection
     }
 
     /**
+     * True if the selection contains the given dice set.
+     */
+    public boolean contains(DiceSet set) {
+        return dice_sets.contains(set);
+    }
+
+    /**
      * Returns a string of the DiceSet's contained in this selection.
      */
     public String toString() {
