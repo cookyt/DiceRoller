@@ -17,53 +17,6 @@
             android:textOff="@string/all_rolls"
             android:layout_weight="1" />
 
-        <!-- <ToggleButton -->
-        <!--     android:id="@+id/all_rolls_button" -->
-        <!--     android:layout_width="0px" -->
-        <!--     android:layout_height="wrap_content" -->
-        <!--     android:checked="false" -->
-        <!--     android:textOn="@string/all_rolls" -->
-        <!--     android:textOff="@string/all_rolls" -->
-        <!--     android:layout_weight="1" /> -->
-
-        <!-- <Switch -->
-        <!--     android:id="@+id/all_rolls_button" -->
-        <!--     android:layout_width="0px" -->
-        <!--     android:layout_height="wrap_content" -->
-        <!--     android:checked="false" -->
-        <!--     android:textOn="@string/last_roll" -->
-        <!--     android:textOff="@string/all_rolls" -->
-        <!--     android:text="" -->
-        <!--     android:switchPadding="0px" -->
-        <!--     android:layout_weight="1" /> -->
-
-
-    </LinearLayout>
-    
-
-    <LinearLayout 
-        android:id="@+id/last_roll_view"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
-
-        <!-- Test message -->
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="@string/last_roll"
-        />
-
-        <ListView
-            android:id="@+id/dice_set_sums_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-
-        <GridView
-            android:id="@+id/dice_rolls_grid"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-
     </LinearLayout>
 
     <LinearLayout 
@@ -73,18 +26,15 @@
         android:orientation="vertical"
         android:visibility="gone" >
 
-        <!-- Test message -->
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="@string/all_rolls"
-        />
-
         <ListView
             android:id="@+id/all_rolls_list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
     </LinearLayout>
+
+    <include 
+        android:id="@+id/last_roll_view"
+        layout="@layout/statistics_row" />
 
 </LinearLayout>
