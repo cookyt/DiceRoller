@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".SetCreatorActivity" >
+
+    <EditText
+        android:id="@+id/name_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/setname_hint"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/modifier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_text"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:inputType="numberSigned" />
+
+    <TextView
+        android:id="@+id/modifier_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/modifier"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/name_text"
+        android:layout_gravity="center"
+        android:layout_toLeftOf="@id/modifier"
+        android:gravity="center"
+        android:text="@string/label_modifier" />
+
+    <LinearLayout
+        android:id="@+id/finish_buttons"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true" >
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0px"
+            android:layout_weight="1"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0px"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/dice_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/finish_buttons"
+        android:layout_below="@id/modifier"
+        android:orientation="horizontal"
+        android:isScrollContainer="false" />
+
+
+</RelativeLayout>

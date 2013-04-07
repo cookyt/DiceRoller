@@ -1,7 +1,6 @@
 <resources>
 
     <string name="placeholder">placeholder</string>
-
     <string name="app_name">DiceRoller</string>
     <string name="statistics_title">Statistics</string>
     <string name="central_title">Central</string>
@@ -14,5 +13,10 @@
     <string name="last_roll">Last Roll</string>
     <string name="all_rolls">All Rolls</string>
     <string name="no_statistics">No Statistics</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_creator">Set Creator</string>
+    <string name="setname_hint">set name</string>
+    <string name="label_modifier">Modifier:</string>
 
 </resources>

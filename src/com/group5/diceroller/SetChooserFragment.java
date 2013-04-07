@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.os.Bundle;
 import android.util.Log;
+import android.content.Intent;
 
 public class SetChooserFragment extends ListFragment {
     DiceRollerState state;
@@ -29,6 +30,7 @@ public class SetChooserFragment extends ListFragment {
 
         Button add_a_set = new Button(getActivity());
         add_a_set.setText("Add a Set");
+        add_a_set.setOnClickListener(new AddSetClickListener());
         getListView().addFooterView(add_a_set, null, true);
 
         setListAdapter(adapter);
@@ -100,6 +102,15 @@ public class SetChooserFragment extends ListFragment {
 
             main_description.setOnClickListener(new ToggleOnClickListener(position));
             return row;
+        }
+    }
+
+    /**
+     * Click listener to start the activity to add a new dice set.
+     */
+    class AddSetClickListener implements View.OnClickListener {
+        public void onClick(View v) {
+            startActivity(new Intent(getActivity(), SetCreatorActivity.class));
         }
     }
 
