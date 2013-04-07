@@ -9,6 +9,7 @@
         android:layout_weight="2"
         android:hint="count"
         android:ems="10"
+        android:gravity="center"
         android:inputType="numberSigned" />
 
     <TextView
