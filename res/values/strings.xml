@@ -18,5 +18,8 @@
     <string name="title_creator">Set Creator</string>
     <string name="setname_hint">set name</string>
     <string name="label_modifier">Modifier:</string>
+    <string name="add_dice_dialog_title">How many faces?</string>
+    <string name="add_dice_ok">Ok</string>
+    <string name="add_dice_cancel">Cancel</string>
 
 </resources>
