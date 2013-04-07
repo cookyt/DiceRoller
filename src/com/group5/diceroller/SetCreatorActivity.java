@@ -3,6 +3,7 @@ package com.group5.diceroller;
 import java.util.List;
 import java.util.ArrayList;
 import android.os.Bundle;
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -19,6 +20,8 @@ import android.text.Editable;
 public class SetCreatorActivity extends FragmentActivity
     implements AddDiceDialogFragment.AddDiceListener {
 
+    EditText set_name;
+    EditText modifier;
     Button save_button;
     Button cancel_button;
     List<Dice> dice;
@@ -29,6 +32,9 @@ public class SetCreatorActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.creator);
         dice = new ArrayList<Dice>();
+
+        set_name = (EditText)findViewById(R.id.name_text);
+        modifier = (EditText)findViewById(R.id.modifier);
 
         save_button = (Button)findViewById(R.id.save_button);
         save_button.setOnClickListener(new SaveClickListener());
@@ -110,12 +116,33 @@ public class SetCreatorActivity extends FragmentActivity
 
     class CancelClickListener implements View.OnClickListener {
         public void onClick(View v) {
+            setResult(Activity.RESULT_CANCELED);
             finish();
         }
     }
 
     class SaveClickListener implements View.OnClickListener {
         public void onClick(View v) {
+            String name = set_name.getText().toString();
+            int modifier_val = AddDiceDialogFragment.getNumFromEditable(modifier.getText());
+
+            boolean non_empty = false;
+            DiceSet set = new DiceSet(DiceSet.NOT_SAVED, name, modifier_val);
+            for (Dice d : dice) {
+                if (d.count != 0) {
+                    non_empty = true;
+                    set.add(d);
+                }
+            }
+
+            if (non_empty) {
+                DiceRollerState.getState().diceSets().add(set);
+                set.save();
+                setResult(Activity.RESULT_OK);
+            } else {
+                setResult(Activity.RESULT_CANCELED);
+            }
+
             finish();
         }
     }

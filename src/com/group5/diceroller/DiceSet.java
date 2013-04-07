@@ -14,6 +14,8 @@ public class DiceSet
     String name;
     int modifier;
 
+    public static final int NOT_SAVED = -1;
+
     /**
      * Construts a DiceSet with the given id, name, and modifier.
      */

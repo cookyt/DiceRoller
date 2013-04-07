@@ -97,8 +97,6 @@ public class DiceRollerActivity extends FragmentActivity
         return true;
     }
 
-    
-
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 

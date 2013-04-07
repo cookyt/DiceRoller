@@ -15,9 +15,11 @@ import android.util.Log;
 import android.content.Intent;
 
 public class SetChooserFragment extends ListFragment {
+    public static final String kTag = "SetChooserFrag";
+    public static final int kUpdateSets = 0;
     DiceRollerState state;
     OnSelectionChangedListener selection_changed_listener;
-    public static final String kTag = "SetChooserFrag";
+    DiceSelectionAdapter adapter;
 
     @Override
     /**
@@ -26,12 +28,12 @@ public class SetChooserFragment extends ListFragment {
      */
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        DiceSelectionAdapter adapter = new DiceSelectionAdapter();
+        adapter = new DiceSelectionAdapter();
 
         Button add_a_set = new Button(getActivity());
         add_a_set.setText("Add a Set");
         add_a_set.setOnClickListener(new AddSetClickListener());
-        getListView().addFooterView(add_a_set, null, true);
+        getListView().addFooterView(add_a_set);
 
         setListAdapter(adapter);
     }
@@ -50,6 +52,15 @@ public class SetChooserFragment extends ListFragment {
             throw new ClassCastException(activity.toString() + " must implement OnSelectionChangedListener");
         }
         state = DiceRollerState.getState();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != kUpdateSets)
+            return;
+        if (resultCode != Activity.RESULT_OK)
+            return;
+        Log.i(kTag, "notifying adapter explicitly");
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -110,7 +121,7 @@ public class SetChooserFragment extends ListFragment {
      */
     class AddSetClickListener implements View.OnClickListener {
         public void onClick(View v) {
-            startActivity(new Intent(getActivity(), SetCreatorActivity.class));
+            startActivityForResult(new Intent(getActivity(), SetCreatorActivity.class), kUpdateSets);
         }
     }
 
