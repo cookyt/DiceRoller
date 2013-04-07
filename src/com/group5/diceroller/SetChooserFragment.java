@@ -43,16 +43,11 @@ public class SetChooserFragment extends ListFragment {
         super.onAttach(activity);
 
         try {
-            state = (DiceRollerState) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement DiceRollerState");
-        }
-
-        try {
             selection_changed_listener = (OnSelectionChangedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnSelectionChangedListener");
         }
+        state = DiceRollerState.getState();
     }
 
     /**
@@ -112,7 +107,7 @@ public class SetChooserFragment extends ListFragment {
      * This listens for a click event on one of the set buttons to add/remove a
      * set from the current selection.
      */
-    public class ToggleOnClickListener implements View.OnClickListener {
+    class ToggleOnClickListener implements View.OnClickListener {
         DiceSet described_set;
 
         public ToggleOnClickListener(int position) {

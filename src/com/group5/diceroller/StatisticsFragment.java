@@ -32,12 +32,7 @@ public class StatisticsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        try {
-            state = (DiceRollerState) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement DiceRollerState");
-        }
+        state = DiceRollerState.getState();
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.group5.diceroller;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -24,7 +22,7 @@ import android.util.Log;
 
 public class DiceRollerActivity extends FragmentActivity
     implements ActionBar.TabListener, OnDiceRolledListener,
-    OnSelectionChangedListener, DiceRollerState {
+    OnSelectionChangedListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -39,18 +37,7 @@ public class DiceRollerActivity extends FragmentActivity
      */
     ViewPager mViewPager;
 
-    /**
-     * The list of sets that are available to the user.
-     */
-    List<DiceSet> dice_sets;
-
-    /**
-     * The sets of dice which are rolled when the user clicks "roll".
-     */
-    SetSelection active_selection;
-
-    List<SetSelection> roll_history;
-
+    DiceRollerState state;
     SetChooserFragment chooser;
     CentralFragment central;
     StatisticsFragment statistics;
@@ -101,14 +88,7 @@ public class DiceRollerActivity extends FragmentActivity
 
         // Move the pager to the center item
         mViewPager.setCurrentItem(1, false);
-
-        dice_sets = DiceSet.LoadAllFromDB();
-        active_selection = new SetSelection();
-
-        // have to add/remove from 2 ends, so a linked list is better here.
-        // (TODO fixed size history would suggest ring buffered array for
-        // speed, not critical for now)
-        roll_history = new LinkedList<SetSelection>();
+        state = DiceRollerState.getState();
     }
 
     @Override
@@ -132,29 +112,17 @@ public class DiceRollerActivity extends FragmentActivity
 
     public void onDiceRolled() {
         // play possible animations/sound here
-        roll_history.add(0, new SetSelection(active_selection));
-        if (roll_history.size() > 20)
-            roll_history.remove(20);
+        state.rollHistory().add(0, new SetSelection(state.activeSelection()));
+        if (state.rollHistory().size() > 20)
+            state.rollHistory().remove(20);
 
-        active_selection.roll();
+        state.activeSelection().roll();
         statistics.update();
         mViewPager.setCurrentItem(2);
     }
 
     public void onSelectionChanged() {
         central.updateSelectionText();
-    }
-
-    public List<DiceSet> diceSets() {
-        return dice_sets;
-    }
-
-    public SetSelection activeSelection() {
-        return active_selection;
-    }
-
-    public List<SetSelection> rollHistory() {
-        return roll_history;
     }
 
 
