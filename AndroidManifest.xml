@@ -23,6 +23,7 @@
 
         <activity
             android:name=".SetCreatorActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:label="@string/title_creator" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
