@@ -17,7 +17,7 @@ public class DiceSet
     public static final int NOT_SAVED = -1;
 
     /**
-     * Construts a DiceSet with the given id, name, and modifier.
+     * Constructs a DiceSet with the given id, name, and modifier.
      */
     public DiceSet(int id, String name, int modifier) {
         this.name = name;
@@ -26,7 +26,7 @@ public class DiceSet
     }
 
     /**
-     * Construts a DiceSet with the given id and name. The Modifier is
+     * Constructs a DiceSet with the given id and name. The Modifier is
      * defaulted to 0.
      */
     public DiceSet(int id, String name) {
