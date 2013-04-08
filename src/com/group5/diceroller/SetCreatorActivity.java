@@ -54,6 +54,8 @@ public class SetCreatorActivity extends FragmentActivity
     }
 
     public void addDice(int num_faces) {
+        if (num_faces <= 1)
+            return;
         for (Dice d : dice) {
             if (d.faces == num_faces)
                 return;
@@ -72,7 +74,8 @@ public class SetCreatorActivity extends FragmentActivity
             this.activity = activity;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null)
             {
@@ -81,6 +84,7 @@ public class SetCreatorActivity extends FragmentActivity
                 holder = new ViewHolder();
                 holder.count = (EditText) convertView.findViewById(R.id.dice_count);
                 holder.faces = (TextView) convertView.findViewById(R.id.face_count);
+                holder.delete_button = (Button) convertView.findViewById(R.id.delete_button);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -105,12 +109,20 @@ public class SetCreatorActivity extends FragmentActivity
                 }
             });
 
+            holder.delete_button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    dice.remove(position);
+                    dice_adapter.notifyDataSetChanged();
+                }
+            });
+
             return convertView;
         }
 
         class ViewHolder {
             public EditText count;
             public TextView faces;
+            public Button delete_button;
         }
     }
 

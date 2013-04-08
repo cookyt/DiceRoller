@@ -20,4 +20,13 @@
         android:gravity="center"
         android:ems="10" />
 
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:ems="10"
+        android:text="@string/delete"/>
+
 </LinearLayout>

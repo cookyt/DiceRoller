@@ -21,5 +21,6 @@
     <string name="add_dice_dialog_title">How many faces?</string>
     <string name="add_dice_ok">Ok</string>
     <string name="add_dice_cancel">Cancel</string>
+    <string name="delete">Delete</string>
 
 </resources>
