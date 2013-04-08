@@ -88,6 +88,15 @@ public class DiceSet
     }
 
     /**
+     * Saves this set to the database. If the ID is DiceSet.NOT_SAVED, then it
+     * creates a new set and updates this set's id to represent the newly-saved
+     * id.
+     * TODO implement:Padraic
+     */
+    public void save() {
+    }
+
+    /**
      * Adds a dice to this DiceSet. If the dice to add has the same face count
      * as another Dice in the set, its count is added into the count of the
      * Dice in the set.

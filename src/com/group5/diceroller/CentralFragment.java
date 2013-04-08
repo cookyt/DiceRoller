@@ -83,7 +83,6 @@ public class CentralFragment extends Fragment {
          */
         public void onClick(View v) {
             rolled_listener.onDiceRolled();
-            state.diceSets().add(new DiceSet(-1, "name1", 0));
         }
     }
 
