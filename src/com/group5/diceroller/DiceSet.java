@@ -73,8 +73,10 @@ public class DiceSet
      */
     public String description() {
         StringBuilder ret = new StringBuilder();
-        String seperator = ", ";
+        final String seperator = ", ";
         boolean first = true;
+
+        ret.append('(');
         for (Dice d : dice_set) {
             if (!first)
                 ret.append(seperator);
@@ -83,9 +85,17 @@ public class DiceSet
             ret.append('D');
             ret.append(d.faces);
         }
-        if (ret.length() > 0 && modifier > 0)
-            ret.append(" + " + modifier);
-        return ret.toString();
+        ret.append(')');
+
+        // At least one item in the set
+        if (!first) {
+            if (modifier > 0)
+                ret.append(" + " + modifier);
+            return ret.toString();
+        }
+
+        // Nothing in the set, return empty string.
+        return "";
     }
 
     /**
