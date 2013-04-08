@@ -42,6 +42,9 @@ public class SetCreatorActivity extends FragmentActivity
         cancel_button = (Button)findViewById(R.id.cancel_button);
         cancel_button.setOnClickListener(new CancelClickListener());
 
+        Button delete_button = (Button)findViewById(R.id.delete_button);
+        delete_button.setVisibility(View.GONE);
+
         Button add_dice = new Button(this);
         add_dice.setText("add");
         add_dice.setOnClickListener(new AddDiceClickListener());
@@ -60,7 +63,7 @@ public class SetCreatorActivity extends FragmentActivity
             if (d.faces == num_faces)
                 return;
         }
-        Dice d = new Dice(num_faces, count);
+        Dice d = new Dice(num_faces, 0);
         dice.add(d);
         dice_adapter.notifyDataSetChanged();
     }
