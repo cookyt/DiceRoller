@@ -49,9 +49,19 @@ public class DiceSet
      */
     public static List<DiceSet> LoadAllFromDB() {
         ArrayList<DiceSet> ret = new ArrayList<DiceSet>();
+
+        DiceSet set = new DiceSet("", 0);
+        set.add(new Dice(10, 10));
+        set.add(new Dice(6, 5));
+        ret.add(set);
+
         for (int i=0; i<9; i++)
             ret.add(new DiceSet("Set " + i, 0));
-        ret.add(new DiceSet("", 0));
+
+        set = new DiceSet("", 0);
+        set.add(new Dice(6, 3));
+        ret.add(set);
+
         return ret;
     }
 
@@ -70,8 +80,11 @@ public class DiceSet
                 ret.append(seperator);
             first = false;
             ret.append(d.count);
+            ret.append('D');
             ret.append(d.faces);
         }
+        if (ret.length() > 0 && modifier > 0)
+            ret.append(" + " + modifier);
         return ret.toString();
     }
 
@@ -140,7 +153,7 @@ public class DiceSet
      * Returns a hash code of this dice set.
      */
     public int hashCode() {
-        return description().hashCode();
+        return label().hashCode();
     }
 
     /**

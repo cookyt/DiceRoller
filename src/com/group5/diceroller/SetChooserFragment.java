@@ -149,7 +149,7 @@ public class SetChooserFragment extends ListFragment {
             if (btn.isChecked()) {
                 state.activeSelection().add(described_set);
             } else {
-                state.activeSelection().remove(described_set.id);
+                state.activeSelection().remove(described_set);
             }
             selection_changed_listener.onSelectionChanged();
         }

@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ToggleButton;
 import android.widget.TextView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.util.Log;
@@ -52,7 +50,7 @@ public class StatisticsFragment extends Fragment {
 
         ViewHolder holder = new ViewHolder();
         holder.sums = (LinearLayout) (last_roll.findViewById(R.id.dice_set_sums_list));
-        holder.rolls = (TableLayout) (last_roll.findViewById(R.id.dice_rolls_grid));
+        holder.rolls = (LinearLayout) (last_roll.findViewById(R.id.dice_rolls_grid));
         last_roll.setTag(holder);
 
         all_rolls = (ListView) layout.findViewById(R.id.all_rolls_view);
@@ -94,7 +92,7 @@ public class StatisticsFragment extends Fragment {
                     value_view.setText("" + val);
 
                     TextView face_view = (TextView) (die.findViewById(R.id.die_face_count));
-                    face_view.setText(dice.faces);
+                    face_view.setText("" + dice.faces);
 
                     creator.add(die);
                 }
@@ -142,14 +140,14 @@ public class StatisticsFragment extends Fragment {
      * put in a scrollable list.
      */
     class GridCreator {
-        TableLayout grid;
+        LinearLayout grid;
         int row;
         int col;
         int max_cols;
 
-        TableRow cur_row;
+        LinearLayout cur_row;
 
-        public GridCreator(TableLayout grid, int max_cols) {
+        public GridCreator(LinearLayout grid, int max_cols) {
             this.grid = grid;
             this.row = 0;
             this.col = 0;
@@ -166,7 +164,7 @@ public class StatisticsFragment extends Fragment {
 
         public void newRow() {
             ++row;
-            TableRow cur_row = new TableRow(getActivity().getApplicationContext());
+            cur_row = new LinearLayout(getActivity().getApplicationContext());
             grid.addView(cur_row);
         }
     }
@@ -200,7 +198,7 @@ public class StatisticsFragment extends Fragment {
 
                 ViewHolder holder = new ViewHolder();
                 holder.sums = (LinearLayout) (row.findViewById(R.id.dice_set_sums_list));
-                holder.rolls = (TableLayout) (row.findViewById(R.id.dice_rolls_grid));
+                holder.rolls = (LinearLayout) (row.findViewById(R.id.dice_rolls_grid));
 
                 row.setTag(holder);
             }
@@ -211,6 +209,6 @@ public class StatisticsFragment extends Fragment {
 
     static class ViewHolder {
         LinearLayout sums;
-        TableLayout rolls;
+        LinearLayout rolls;
     }
 }
