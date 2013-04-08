@@ -57,6 +57,9 @@ public class StatisticsFragment extends Fragment {
         all_rolls_adapter = new HistoryAdapter();
         all_rolls.setAdapter(all_rolls_adapter);
 
+        if (last_roll.getVisibility() == View.VISIBLE && state.rollHistory().size() > 0)
+            populateStatsRow(last_roll, state.rollHistory().get(0));
+
         chooseChangeButtonEnable();
         return layout;
     }
