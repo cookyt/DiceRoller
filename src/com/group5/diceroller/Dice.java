@@ -1,6 +1,7 @@
 package com.group5.diceroller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Iterator;
 
@@ -25,7 +26,8 @@ public class Dice
         this.faces = tocopy.faces;
         this.count = tocopy.count;
         this.set_id = tocopy.set_id;
-        this.last_roll = last_roll = new ArrayList<Integer>();
+        this.last_roll = new ArrayList<Integer>();
+        Collections.copy(this.last_roll, tocopy.last_roll);
     }
     
     
@@ -43,13 +45,6 @@ public class Dice
     	last_roll = new ArrayList<Integer>();
     }
     
-    /**
-     * Copy constructor.
-     * TODO current implementation for testing purposes only.
-     */
-    public Dice(Dice d) {
-    }
-
     /**
      * Randomizes the values of the dice in this object.
      */
