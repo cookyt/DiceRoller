@@ -17,6 +17,7 @@ import android.content.Intent;
 public class SetChooserFragment extends ListFragment {
     public static final String kTag = "SetChooserFrag";
     public static final int kUpdateSets = 0;
+    public static final String kIntentItemPosition = "ItemPosition";
     DiceRollerState state;
     OnSelectionChangedListener selection_changed_listener;
     DiceSelectionAdapter adapter;
@@ -32,7 +33,11 @@ public class SetChooserFragment extends ListFragment {
 
         Button add_a_set = new Button(getActivity());
         add_a_set.setText("Add a Set");
-        add_a_set.setOnClickListener(new AddSetClickListener());
+        add_a_set.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getActivity(), SetCreatorActivity.class), kUpdateSets);
+            }
+        });
         getListView().addFooterView(add_a_set);
 
         setListAdapter(adapter);
@@ -82,12 +87,13 @@ public class SetChooserFragment extends ListFragment {
          * @param position The position in the list being requested.
          * @return The view for the requested row.
          */
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             Log.i(kTag, "Creating chooser item, pos:" + position);
             // Last item in the list is the "add a set button"
 
             View row = convertView;
             ToggleButton main_description;
+            Button edit;
             if (row == null)
             {
                 LayoutInflater inflater =  getActivity().getLayoutInflater();
@@ -96,11 +102,16 @@ public class SetChooserFragment extends ListFragment {
                 // ViewHolder trick
                 // see: http://www.youtube.com/watch?v=N6YdwzAvwOA
                 main_description = (ToggleButton) row.findViewById(R.id.main_description);
-                row.setTag(main_description);
+                edit = (Button) row.findViewById(R.id.edit_button);
+
+                ViewHolder holder = new ViewHolder(main_description, edit);
+                row.setTag(holder);
             }
             else
             {
-                main_description = (ToggleButton) row.getTag();
+                ViewHolder holder = (ViewHolder) row.getTag();
+                main_description = holder.main_description;
+                edit = holder.edit;
             }
 
             DiceSet cur_set = state.diceSets().get(position);
@@ -110,18 +121,25 @@ public class SetChooserFragment extends ListFragment {
             main_description.setTextOn(label);
             main_description.setTextOff(label);
             main_description.setChecked(state.activeSelection().contains(cur_set));
-
             main_description.setOnClickListener(new ToggleOnClickListener(position));
+
+            edit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), EditSetActivity.class);
+                    intent.putExtra(kIntentItemPosition, position);
+                    startActivityForResult(intent, kUpdateSets);
+                }
+            });
             return row;
         }
-    }
 
-    /**
-     * Click listener to start the activity to add a new dice set.
-     */
-    class AddSetClickListener implements View.OnClickListener {
-        public void onClick(View v) {
-            startActivityForResult(new Intent(getActivity(), SetCreatorActivity.class), kUpdateSets);
+        class ViewHolder {
+            public ViewHolder(ToggleButton main_description, Button edit) {
+                this.main_description = main_description;
+                this.edit = edit;
+            }
+            ToggleButton main_description;
+            Button edit;
         }
     }
 

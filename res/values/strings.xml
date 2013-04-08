@@ -22,5 +22,6 @@
     <string name="add_dice_ok">Ok</string>
     <string name="add_dice_cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="title_editor">Set Editor</string>
 
 </resources>

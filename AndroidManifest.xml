@@ -30,6 +30,15 @@
                 android:value="com.group5.diceroller.DiceRollerActivity" />
         </activity>
 
+        <activity
+            android:name=".EditSetActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:label="@string/title_creator" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.group5.diceroller.DiceRollerActivity" />
+        </activity>
+
     </application>
 
 </manifest>
