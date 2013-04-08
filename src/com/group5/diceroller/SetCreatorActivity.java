@@ -139,7 +139,7 @@ public class SetCreatorActivity extends FragmentActivity
             int modifier_val = AddDiceDialogFragment.getNumFromEditable(modifier.getText());
 
             boolean non_empty = false;
-            DiceSet set = new DiceSet(DiceSet.NOT_SAVED, name, modifier_val);
+            DiceSet set = new DiceSet(name, modifier_val);
             for (Dice d : dice) {
                 if (d.count != 0) {
                     non_empty = true;

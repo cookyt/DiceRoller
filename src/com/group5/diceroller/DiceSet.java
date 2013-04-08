@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class DiceSet
     implements Iterable<Dice> {
 
-    Set<Dice> dice;
+    Set<Dice> dice_set;
     int id;
     String name;
     int modifier;
@@ -22,32 +22,27 @@ public class DiceSet
     public DiceSet(int id, String name, int modifier) {
         this.name = name;
         this.modifier = modifier;
-        dice = new TreeSet<Dice>();
+        dice_set = new TreeSet<Dice>();
     }
 
     /**
-     * Construts a DiceSet with the given id and name. The Modifier is
-     * defaulted to 0.
+     * Construts a DiceSet with the given name and modifier. The set_id is
+     * defaulted to NOT_SAVED.
      */
-    public DiceSet(int id, String name) {
-        this(id, name, 0);
+    public DiceSet(String name, int modifier) {
+        this(NOT_SAVED, name, modifier);
     }
 
     /**
      * Loads all the dice sets in the local database into a list.
-     * TODO implement. Current implementation for testing only.
+     * TODO implement:Padraic, Current implementation for testing only.
      * @return A list of dice sets from the database
      */
     public static List<DiceSet> LoadAllFromDB() {
         ArrayList<DiceSet> ret = new ArrayList<DiceSet>();
-           // Not sure if this is the correct way to get the number of rows in the database but I think it is,
-           // which I am using as the number of dice sets we have minus 1 for the header row.
-        int numSets = 9;//diceSet.getRowCount (); 
-        
-        for (int i=0; i<numSets; i++)
-            ret.add(new DiceSet(i, "Set " + i));
-        DiceSet s = new DiceSet(numSets, "");
-        ret.add(s);
+        for (int i=0; i<9; i++)
+            ret.add(new DiceSet("Set " + i, 0));
+        ret.add(new DiceSet("", 0));
         return ret;
     }
 
@@ -55,27 +50,20 @@ public class DiceSet
      * Returns a standard dice notation string describing the dice in this set.
      * For example: "1D6, 2D4, 3D8". If a set has no dice, this returns the
      * empty string.
-     * TODO implement.
      * @return A description of this dice set.
      */
     public String description() {
-        /* ArrayList<DiceSet> ret = new ArrayList<DiceSet>(); */
-        /* Scanner DiceScanner = new scanner (DiceSet); */
-        /* String desc = ""; */
-        /*                          */
-        /* // I am using this assuming the database has diceset name, number of that dice, number of sides of that dice, and repeating that till there are no more left. */
-        /*  while (DiceSet.hasnextint()) */
-        /* { */
-        /*     desc = desc + DiceScanner.nextInt; */
-        /*     desc = desc + "D" */
-        /*     desc = desc + DiceScanner.nextInt; */
-        /*     if DiceSet.hasnextint() */
-        /* 	desc = desc + ", " */
-        /* } */
-        /*  */
-        /* return desc;    						    // changes the hardcoded answer to desc which is a string that should have all of the dice info in it. */
-        return "description";
-                                                                
+        StringBuilder ret = new StringBuilder();
+        String seperator = ", ";
+        boolean first = true;
+        for (Dice d : dice_set) {
+            if (!first)
+                ret.append(seperator);
+            first = false;
+            ret.append(d.count);
+            ret.append(d.faces);
+        }
+        return ret.toString();
     }
 
     /**
@@ -100,57 +88,61 @@ public class DiceSet
      * Adds a dice to this DiceSet. If the dice to add has the same face count
      * as another Dice in the set, its count is added into the count of the
      * Dice in the set.
-     * TODO implement.
      * @param dice The dice to add.
      * @return True if the dice was added to the set, false if another dice
      *   with the same number of faces was already in the set.
      */
     public boolean add(Dice dice) {
-        return false;
+        return dice_set.add(dice);
     }
 
     /**
      * Removes a dice from the set which has the given number of faces.
-     * TODO implement.
-     * @param faces The number of faces on the Dice to be removed.
+     * @param dice The dice to remove.
      * @return True if a Dice was removed from the set, false otherwise.
      */
-    public boolean remove(int faces) {
-        return false;
+    public boolean remove(Dice dice) {
+        return dice_set.remove(dice);
     }
 
     /**
      * Checks if two dice sets contain the same dice. 
-     * TODO implement.
      * @return True if for every Dice of a given face and count in one DiceSet,
      *   a dice with the same face and count is in the other.
      */
     public boolean equals(DiceSet other) {
-        return false;
+        for (Dice d : other) {
+            if (!dice_set.contains(d))
+                return false;
+        }
+        return true;
     }
 
     /**
      * Returns an itrator over the dice in this set.
-     * TODO implement. current implementation for testing
      */
     public Iterator<Dice> iterator() {
-        return dice.iterator();
+        return dice_set.iterator();
     }
 
     /**
      * Returns the number of dice in this set.
-     * TODO implement
      */
-    public int getCount() {
-        return 0;
+    public int size() {
+        return dice_set.size();
     }
 
     /**
      * Returns the sum of the dice in this set.
-     * TODO implement
      */
     public int sum() {
-        return 0;
+        int sum = 0;
+        for (Dice d : dice_set) {
+            for (Integer i : d) {
+                sum += i.intValue();
+            }
+        }
+        return sum;
     }
 
     /**
