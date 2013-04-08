@@ -121,7 +121,7 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				
-				DiceSet set = new DiceSet(cursor.getInt(0), cursor.getString(1));
+				DiceSet set = new DiceSet(cursor.getInt(0), cursor.getString(1), 0);
 				setList.add(set);
 				
 			} while (cursor.moveToNext());
