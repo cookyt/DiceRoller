@@ -1,9 +1,12 @@
 package com.group5.diceroller;
 
+import org.random.rjgodoy.trng.MH_SecureRandom;
 import java.security.SecureRandom;
 
 public class Random {
     
+///@TODO - Use MH_SecureRandom with correct HTTP settings to access random.org
+	
     int min_value; // Lowest value face
     int max_value = 6; // Highest value face
     Boolean useRandomOrg = false; // not yet implemented
