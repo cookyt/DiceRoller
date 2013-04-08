@@ -27,7 +27,8 @@ public class Dice
         this.count = tocopy.count;
         this.set_id = tocopy.set_id;
         this.last_roll = new ArrayList<Integer>();
-        Collections.copy(this.last_roll, tocopy.last_roll);
+        for (Integer i : tocopy.last_roll)
+            last_roll.add(new Integer(i.intValue()));
     }
     
     
