@@ -34,6 +34,15 @@ public class DiceSet
     }
 
     /**
+     * Constructs a new set as a deep copy of the given dice set.
+     */
+    public DiceSet(DiceSet other) {
+        super(other.id, other,name, other.modifier);
+        for (Dice d : other)
+            add(new Dice(d));
+    }
+
+    /**
      * Loads all the dice sets in the local database into a list.
      * TODO implement:Padraic, Current implementation for testing only.
      * @return A list of dice sets from the database
@@ -116,6 +125,30 @@ public class DiceSet
                 return false;
         }
         return true;
+    }
+
+    /**
+     * This version of equals needed to use DiceSets in a hash table.
+     */
+    public boolean equals(Object other) {
+        if (other instanceof DiceSet)
+            return equals((DiceSet) other);
+        return super.equals(other);
+    }
+
+    /**
+     * Returns a hash code of this dice set.
+     */
+    public int hashCode() {
+        return description().hashCode();
+    }
+
+    /**
+     * Randomizes the dice in this set.
+     */
+    public void roll() {
+        for (Dice d : dice_set)
+            d.roll();
     }
 
     /**

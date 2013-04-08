@@ -23,7 +23,6 @@ public class SetSelection
 
     /**
      * Constructs an empty SetSelection.
-     * TODO implement. Current implementation for testing only.
      */
     public SetSelection() {
         // For hashset to be useable, boolean equals(Object) and int hashCode()
@@ -34,40 +33,39 @@ public class SetSelection
 
     /**
      * Copys the given selection (deep copy).
-     * TODO implement. Current implementation for testing only.
      */
     public SetSelection(SetSelection set_to_copy) {
         dice_sets = new HashSet<DiceSet>();
+        for (DiceSet set : set_to_copy)
+            add(new DiceSet(set));
     }
 
     /**
      * Randomizes the dice in this SetSelection.
-     * TODO implement
      */
     public void roll() {
+        for (DiceSet set : dice_sets)
+            set.roll();
     }
 
     /**
      * Adds the given DiceSet to this selection.
-     * TODO implement Current implementation for testing only
      * 
      * @param set The DiceSet to add
      * @return True if the set was added, false otherwise.
      */
     public boolean add(DiceSet set) {
-        dice_sets.add(set);
-        return true;
+        return dice_sets.add(set);
     }
 
     /**
      * Removes the dice set with the given id from this selection.
-     * TODO implement.
      *
-     * @param set_id The id to search for.
+     * @param set The DiceSet to remove
      * @return True if the set was removed, false otherwise.
      */
-    public boolean remove(int set_id) {
-        return false;
+    public boolean remove(DiceSet set) {
+        return dice_sets.remove(set);
     }
 
     /**
@@ -95,10 +93,6 @@ public class SetSelection
 
     /**
      * Returns an iterator over the DiceSets in this SetSelection.
-     * NOTE to the implementor this function is the reason the dice_sets
-     * attribute exists up above. It makes it easy to write the skeleton for
-     * this method.
-     * TODO implement
      */
     public Iterator<DiceSet> iterator() {
         return dice_sets.iterator();
@@ -106,7 +100,6 @@ public class SetSelection
 
     /**
      * Returns the number of sets in this selection.
-     * TODO implement
      */
     public int size() {
         return dice_sets.size();
