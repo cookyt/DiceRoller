@@ -27,6 +27,13 @@ public class Dice
     List<Integer> last_roll;
 
     /**
+     * Copy constructor.
+     * TODO current implementation for testing purposes only.
+     */
+    public Dice(Dice d) {
+    }
+
+    /**
      * Randomizes the values of the dice in this object.
      * TODO implement:Ryan
      */

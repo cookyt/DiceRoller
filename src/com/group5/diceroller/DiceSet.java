@@ -17,7 +17,7 @@ public class DiceSet
     public static final int NOT_SAVED = -1;
 
     /**
-     * Construts a DiceSet with the given id, name, and modifier.
+     * Constructs a DiceSet with the given id, name, and modifier.
      */
     public DiceSet(int id, String name, int modifier) {
         this.name = name;
@@ -37,7 +37,7 @@ public class DiceSet
      * Constructs a new set as a deep copy of the given dice set.
      */
     public DiceSet(DiceSet other) {
-        super(other.id, other,name, other.modifier);
+        this(other.id, other.name, other.modifier);
         for (Dice d : other)
             add(new Dice(d));
     }
