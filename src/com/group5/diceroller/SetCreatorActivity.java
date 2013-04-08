@@ -60,9 +60,7 @@ public class SetCreatorActivity extends FragmentActivity
             if (d.faces == num_faces)
                 return;
         }
-        Dice d = new Dice();
-        d.faces = num_faces;
-        d.count = 0;
+        Dice d = new Dice(num_faces, count);
         dice.add(d);
         dice_adapter.notifyDataSetChanged();
     }
