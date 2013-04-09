@@ -50,6 +50,7 @@ public class CentralFragment extends Fragment {
         if (state.activeSelection().size() == 0)
             roll_button.setEnabled(false);
 
+        updateSelectionText();
         return layout;
     }
 
