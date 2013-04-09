@@ -2,6 +2,7 @@ package com.group5.diceroller;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Date;
 
 /**
  * Singleton class representing the state of the dice in the dice roller. It
@@ -11,6 +12,9 @@ public class DiceRollerState {
     List<DiceSet> dice_sets;
     SetSelection active_selection;
     List<SetSelection> roll_history;
+    List<Date> roll_dates;
+
+    public static final int kHistorySize = 20;
 
     static DiceRollerState state = null;
 
@@ -19,6 +23,7 @@ public class DiceRollerState {
         // (TODO fixed size history would suggest ring buffered array for
         // speed, not critical for now)
         roll_history = new LinkedList<SetSelection>();
+        roll_dates = new LinkedList<Date>();
         dice_sets = DiceSet.LoadAllFromDB();
         active_selection = new SetSelection();
     }
@@ -42,5 +47,9 @@ public class DiceRollerState {
 
     public List<SetSelection> rollHistory() {
         return roll_history;
+    }
+
+    public List<Date> rollDates() {
+        return roll_dates;
     }
 }

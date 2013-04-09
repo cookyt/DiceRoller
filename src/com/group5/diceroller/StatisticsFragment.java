@@ -2,6 +2,8 @@ package com.group5.diceroller;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +55,7 @@ public class StatisticsFragment extends Fragment {
 
         ViewHolder holder = new ViewHolder();
         holder.rolls = (LinearLayout) (last_roll.findViewById(R.id.dice_rolls_grid));
+        holder.date_text = (TextView) (last_roll.findViewById(R.id.date_text));
         last_roll.setTag(holder);
 
         all_rolls = (ListView) layout.findViewById(R.id.all_rolls_view);
@@ -60,7 +63,7 @@ public class StatisticsFragment extends Fragment {
         all_rolls.setAdapter(all_rolls_adapter);
 
         if (last_roll.getVisibility() == View.VISIBLE && state.rollHistory().size() > 0)
-            populateStatsRow(last_roll, state.rollHistory().get(0));
+            populateStatsRow(last_roll, 0);
 
         chooseChangeButtonEnable();
         return layout;
@@ -72,11 +75,17 @@ public class StatisticsFragment extends Fragment {
      * listviews.
      *
      * @param view The view to populate.
-     * @param selection The selection from which to pull data.
+     * @param position The position in the roll history of the selection to represent
      */
-    private void populateStatsRow(View view, SetSelection selection) {
+    private void populateStatsRow(View view, int position) {
         Log.i(kTag, "Populating last roll view");
+
+        SetSelection selection = state.rollHistory().get(position);
         ViewHolder holder = (ViewHolder) view.getTag();
+
+        Date date = state.rollDates().get(position);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM hh:mm:ss a");
+        holder.date_text.setText(formatter.format(date));
 
         holder.rolls.removeAllViews();
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -139,7 +148,7 @@ public class StatisticsFragment extends Fragment {
      */
     public void update() {
         chooseChangeButtonEnable();
-        populateStatsRow(last_roll, state.rollHistory().get(0));
+        populateStatsRow(last_roll, 0);
         all_rolls_adapter.notifyDataSetChanged();
     }
 
@@ -221,15 +230,17 @@ public class StatisticsFragment extends Fragment {
 
                 ViewHolder holder = new ViewHolder();
                 holder.rolls = (LinearLayout) (row.findViewById(R.id.dice_rolls_grid));
+                holder.date_text = (TextView) (row.findViewById(R.id.date_text));
 
                 row.setTag(holder);
             }
-            populateStatsRow(row, state.rollHistory().get(position));
+            populateStatsRow(row, position);
             return row;
         }
     }
 
     static class ViewHolder {
         LinearLayout rolls;
+        TextView date_text;
     }
 }

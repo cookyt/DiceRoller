@@ -1,6 +1,7 @@
 package com.group5.diceroller;
 
 import java.util.List;
+import java.util.Date;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -111,9 +112,13 @@ public class DiceRollerActivity extends FragmentActivity
     public void onDiceRolled() {
         // play possible animations/sound here
         state.activeSelection().roll();
+
         state.rollHistory().add(0, new SetSelection(state.activeSelection()));
-        if (state.rollHistory().size() > 20)
-            state.rollHistory().remove(20);
+        state.rollDates().add(0, new Date());
+        if (state.rollHistory().size() > DiceRollerState.kHistorySize) {
+            state.rollHistory().remove(DiceRollerState.kHistorySize);
+            state.rollDates().remove(DiceRollerState.kHistorySize);
+        }
 
         statistics.update();
         mViewPager.setCurrentItem(2);
