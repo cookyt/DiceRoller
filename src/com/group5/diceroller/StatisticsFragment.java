@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ToggleButton;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
+import android.graphics.Color;
 import android.util.Log;
 import android.os.Bundle;
 import android.app.Activity;
@@ -26,6 +28,7 @@ public class StatisticsFragment extends Fragment {
     View last_roll_scroller;
 
     public static final String kTag = "StatisticsFrag";
+    public static final int kDicePerRow = 5;
 
     @Override
     public void onAttach(Activity activity) {
@@ -49,7 +52,6 @@ public class StatisticsFragment extends Fragment {
         last_roll = layout.findViewById(R.id.last_roll_view);
 
         ViewHolder holder = new ViewHolder();
-        holder.sums = (LinearLayout) (last_roll.findViewById(R.id.dice_set_sums_list));
         holder.rolls = (LinearLayout) (last_roll.findViewById(R.id.dice_rolls_grid));
         last_roll.setTag(holder);
 
@@ -76,17 +78,21 @@ public class StatisticsFragment extends Fragment {
         Log.i(kTag, "Populating last roll view");
         ViewHolder holder = (ViewHolder) view.getTag();
 
-        holder.sums.removeAllViews();
+        holder.rolls.removeAllViews();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        GridCreator creator = new GridCreator(holder.rolls, kDicePerRow);
+
         for (DiceSet set : selection) {
             TextView description = new TextView(getActivity().getApplicationContext());
             description.setText(String.format("%s: %d", set.label(), set.sum()));
-            holder.sums.addView(description);
-        }
+            description.setTextColor(Color.BLACK);
 
-        holder.rolls.removeAllViews();
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        GridCreator creator = new GridCreator(holder.rolls, 3);
-        for (DiceSet set : selection) {
+            LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+            float screen_density = getActivity().getApplicationContext().getResources().getDisplayMetrics().density;
+            params.setMargins(0, (int)(15*screen_density), 0, 0);
+
+            creator.addDirect(description, params);
+
             for (Dice dice : set) {
                 for (Integer val : dice) {
                     View die = inflater.inflate(R.layout.dice_box, holder.rolls, false);
@@ -147,6 +153,7 @@ public class StatisticsFragment extends Fragment {
         int row;
         int col;
         int max_cols;
+        boolean add_direct;
 
         LinearLayout cur_row;
 
@@ -154,15 +161,27 @@ public class StatisticsFragment extends Fragment {
             this.grid = grid;
             this.row = 0;
             this.col = 0;
+            this.add_direct = false;
             this.max_cols = max_cols;
         }
 
         public void add(View v) {
-            if (col%max_cols == 0) { 
+            if (col%max_cols == 0 || add_direct) { 
                 newRow();
+                add_direct = false;
             }
             cur_row.addView(v);
             ++col;
+        }
+
+        public void addDirect(View v) {
+            add_direct = true;
+            grid.addView(v);
+        }
+
+        public void addDirect(View v, LayoutParams params) {
+            add_direct = true;
+            grid.addView(v, params);
         }
 
         public void newRow() {
@@ -170,6 +189,7 @@ public class StatisticsFragment extends Fragment {
             cur_row = new LinearLayout(getActivity().getApplicationContext());
             grid.addView(cur_row);
         }
+
     }
 
     class ViewChangeOnClick implements View.OnClickListener {
@@ -200,7 +220,6 @@ public class StatisticsFragment extends Fragment {
                 row = inflater.inflate(R.layout.statistics_row, parent, false);
 
                 ViewHolder holder = new ViewHolder();
-                holder.sums = (LinearLayout) (row.findViewById(R.id.dice_set_sums_list));
                 holder.rolls = (LinearLayout) (row.findViewById(R.id.dice_rolls_grid));
 
                 row.setTag(holder);
@@ -211,7 +230,6 @@ public class StatisticsFragment extends Fragment {
     }
 
     static class ViewHolder {
-        LinearLayout sums;
         LinearLayout rolls;
     }
 }

@@ -4,17 +4,21 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/dice_set_sums_list"
+    <TextView
+        android:id="@+id/time_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:text="time" />
 
     <LinearLayout
         android:id="@+id/dice_rolls_grid"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="40dip"
         android:orientation="vertical" />
 
 </LinearLayout>
