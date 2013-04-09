@@ -115,7 +115,6 @@ public class StatisticsFragment extends Fragment {
                     creator.add(die);
                 }
             }
-            creator.newRow();
         }
     }
 
@@ -162,7 +161,6 @@ public class StatisticsFragment extends Fragment {
         int row;
         int col;
         int max_cols;
-        boolean add_direct;
 
         LinearLayout cur_row;
 
@@ -170,33 +168,35 @@ public class StatisticsFragment extends Fragment {
             this.grid = grid;
             this.row = 0;
             this.col = 0;
-            this.add_direct = false;
             this.max_cols = max_cols;
         }
 
         public void add(View v) {
-            if (col%max_cols == 0 || add_direct) { 
-                newRow();
-                add_direct = false;
+            if (col == 0 || col == max_cols) { 
+                ++row;
+                cur_row = new LinearLayout(getActivity().getApplicationContext());
+                grid.addView(cur_row);
+                col = 1;
+            } else {
+                ++col;
             }
             cur_row.addView(v);
-            ++col;
-        }
-
-        public void addDirect(View v) {
-            add_direct = true;
-            grid.addView(v);
         }
 
         public void addDirect(View v, LayoutParams params) {
-            add_direct = true;
-            grid.addView(v, params);
+            col = 0;
+            if (params == null)
+                grid.addView(v);
+            else
+                grid.addView(v, params);
+        }
+
+        public void addDirect(View v) {
+            addDirect(v, null);
         }
 
         public void newRow() {
-            ++row;
-            cur_row = new LinearLayout(getActivity().getApplicationContext());
-            grid.addView(cur_row);
+            col = 0;
         }
 
     }
