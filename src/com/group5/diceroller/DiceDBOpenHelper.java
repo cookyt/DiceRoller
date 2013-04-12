@@ -2,21 +2,42 @@ package com.group5.diceroller;
 
 import java.util.ArrayList;
 
+// For logging factory
+import android.database.sqlite.SQLiteCursorDriver;
+import android.database.sqlite.SQLiteQuery;
+import android.database.sqlite.SQLiteCursor;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 public class DiceDBOpenHelper extends SQLiteOpenHelper {
 	
 	private static final String DATABASE_NAME = "DiceRoller";
 	private static final int DATABASE_VERSION = 2;
+    public static final String kTag = "DiceDBHelper";
 
-	public DiceDBOpenHelper(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		// TODO Auto-generated constructor stub
+    private static DiceDBOpenHelper db_helper = null;
+
+	private DiceDBOpenHelper(Context context) {
+		super(context, DATABASE_NAME, new LoggingCursorFactory(), DATABASE_VERSION);
 	}
+
+    public static void initialize(Context context) {
+        db_helper = new DiceDBOpenHelper(context);
+    }
+
+    /**
+     * Gets the instance of the database. It returns null if initialize() is
+     * not called sometime before. It should be the responsibility of the main
+     * activity to call initialize().
+     */
+    public static DiceDBOpenHelper getDB() {
+        return db_helper;
+    }
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -41,38 +62,51 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 	}
 	
 	public void saveSet(DiceSet set) {
-		
+		Log.i(kTag, "Saving DiceSet: "+set.description());
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		ContentValues values = new ContentValues();
-		values.put("set_id", set.id);
-		values.put("name", set.name);
+        ContentValues values = new ContentValues();
+        values.put("name", set.name);
 		
 		if (set.id == DiceSet.NOT_SAVED) {		
-			
 			Cursor cursor = db.rawQuery("SELECT set_id FROM set_table ORDER BY set_id DESC LIMIT 1", null);
-			set.id = (cursor.getInt(0) + 1);
+            if (!cursor.moveToFirst())
+                set.id = 0;
+            else
+                set.id = (cursor.getInt(0) + 1);
+
+            values.put("set_id", set.id);
 			db.insert("set_table", null, values);
-		
-		}
-		
-		else if (set.id != DiceSet.NOT_SAVED) {
-			
+
+		} else if (set.id != DiceSet.NOT_SAVED) {
+            values.put("set_id", set.id);
 			db.update("set_table", values, "set_id = ?", new String[] { String.valueOf(set.id)} );
-			
 		}
+
+        for (Dice die : set) {
+            die.set_id = set.id;
+            saveDice(die, db);
+        }
 		
 		db.close();
 	}
+
+    public void saveDice(Dice die) {
+		SQLiteDatabase db = this.getWritableDatabase();
+        saveDice(die, db);
+		db.close();
+    }
 	
-	public void saveDice(Dice die) {
-		
+	private void saveDice(Dice die, SQLiteDatabase db) {
 		boolean exists = false;
 		
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		Cursor cursor = db.query ("dice_table", new String[] {"set_id", "faces", "count"}, "set_id = ?", new String[] {String.valueOf(die.set_id)}, null, null, null, null);
-		if (cursor != null) exists = true;
+		Cursor cursor = db.query("dice_table", 
+            new String[] {"set_id", "faces", "count"}, "set_id = ? AND faces = ?",
+            new String[] {String.valueOf(die.set_id), String.valueOf(die.faces)},
+            null, null, null, null);
+		if (cursor.getCount() != 0)
+            exists = true;
+        Log.i(kTag, String.format("Dice (%d, %d, %d) exists: " + exists, die.set_id, die.faces, die.count));
 		
 		ContentValues values = new ContentValues();
 		values.put("set_id", die.set_id);
@@ -88,8 +122,6 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 			
 			db.update("dice_table", values, "set_id = ?", new String[] { String.valueOf(die.set_id) });
 		}
-		
-		db.close();
 	}
 	
 	public void deleteSet(DiceSet set) {
@@ -111,8 +143,8 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 		db.close();
 	}
 	
-	public ArrayList<DiceSet> loadSets() {
-		
+	public ArrayList<DiceSet> loadSets()
+    {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<DiceSet> setList = new ArrayList<DiceSet>();
 		
@@ -120,10 +152,14 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 		
 		if (cursor.moveToFirst()) {
 			do {
-				
-				DiceSet set = new DiceSet(cursor.getInt(0), cursor.getString(1), 0);
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                int modifier = 0;
+
+				DiceSet set = new DiceSet(id, name, modifier);
+                loadDice(set, db);
+
 				setList.add(set);
-				
 			} while (cursor.moveToNext());
 		}
 		
@@ -131,26 +167,35 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 		return setList;
 	}
 	
-	public ArrayList<Dice> loadDice(int set_id) {
+    /**
+     * Loads the dice associated with the set id of the given set into the
+     * given set.
+     *
+     * @param set The set to load into.
+     * @param db The database to load from
+     */
+	private void loadDice(DiceSet set, SQLiteDatabase db) {
 		
-		SQLiteDatabase db = this.getWritableDatabase();
-		ArrayList<Dice> diceList = new ArrayList<Dice>();
-		
-		Cursor cursor = db.rawQuery("SELECT set_id, faces, count FROM dice_table WHERE set_id = ?", new String[] { String.valueOf(set_id) });
+		Cursor cursor = db.rawQuery(
+            "SELECT faces, count FROM dice_table WHERE set_id = ?",
+            new String[] { String.valueOf(set.id) });
 		
 		if (cursor.moveToFirst()) {
 			do {
-				Dice newDie = new Dice ();
+				int faces = cursor.getInt(0);
+				int count = cursor.getInt(1);
 				
-				newDie.set_id = cursor.getInt(0);
-				newDie.faces = cursor.getInt(1);
-				newDie.count = cursor.getInt(2);
-				
-				diceList.add(newDie);
+				set.add(new Dice(faces, count, set.id));
 			} while (cursor.moveToNext());
 		}
-		
-		db.close();
-		return diceList;
 	}
+
+    static class LoggingCursorFactory implements SQLiteDatabase.CursorFactory {
+        public Cursor newCursor(SQLiteDatabase db,
+            SQLiteCursorDriver driver, String editTable, SQLiteQuery query) {
+            
+            Log.i(kTag, query.toString());
+            return new SQLiteCursor(db, driver, editTable, query);
+        }
+    }
 }

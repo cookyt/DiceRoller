@@ -28,12 +28,16 @@ public class DiceRollerState {
         active_selection = new SetSelection();
     }
 
+    public static void initialize() {
+        state = new DiceRollerState();
+    }
+
     /**
-     * Used to access the singleton instance of the dice roller state.
+     * Used to access the singleton instance of the dice roller state. The
+     * application should call initialize() first to populate the list of dice
+     * sets from the database.
      */
     public static DiceRollerState getState() {
-        if (state == null)
-            state = new DiceRollerState();
         return state;
     }
 

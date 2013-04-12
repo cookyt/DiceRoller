@@ -20,6 +20,7 @@ public class DiceSet
      * Constructs a DiceSet with the given id, name, and modifier.
      */
     public DiceSet(int id, String name, int modifier) {
+        this.id = id;
         this.name = name;
         this.modifier = modifier;
         dice_set = new TreeSet<Dice>();
@@ -44,25 +45,10 @@ public class DiceSet
 
     /**
      * Loads all the dice sets in the local database into a list.
-     * TODO implement:Padraic, Current implementation for testing only.
      * @return A list of dice sets from the database
      */
     public static List<DiceSet> LoadAllFromDB() {
-        ArrayList<DiceSet> ret = new ArrayList<DiceSet>();
-
-        DiceSet set = new DiceSet("", 0);
-        set.add(new Dice(10, 10));
-        set.add(new Dice(6, 5));
-        ret.add(set);
-
-        for (int i=0; i<9; i++)
-            ret.add(new DiceSet("Set " + i, 0));
-
-        set = new DiceSet("", 0);
-        set.add(new Dice(6, 3));
-        ret.add(set);
-
-        return ret;
+        return DiceDBOpenHelper.getDB().loadSets();
     }
 
     /**
@@ -111,9 +97,9 @@ public class DiceSet
      * Saves this set to the database. If the ID is DiceSet.NOT_SAVED, then it
      * creates a new set and updates this set's id to represent the newly-saved
      * id.
-     * TODO implement:Padraic
      */
     public void save() {
+        DiceDBOpenHelper.getDB().saveSet(this);
     }
 
     /**

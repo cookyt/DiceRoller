@@ -65,6 +65,10 @@ public class DiceRollerActivity extends FragmentActivity
         central    = new CentralFragment();
         statistics = new StatisticsFragment();
 
+        DiceDBOpenHelper.initialize(getApplicationContext());
+        DiceRollerState.initialize();
+        state = DiceRollerState.getState();
+
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -91,7 +95,6 @@ public class DiceRollerActivity extends FragmentActivity
 
         // Move the pager to the center item
         mViewPager.setCurrentItem(1, false);
-        state = DiceRollerState.getState();
     }
 
     /**

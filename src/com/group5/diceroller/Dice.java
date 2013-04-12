@@ -64,12 +64,10 @@ public class Dice
     }
 
     /**
-     * Saves this dice in the database with the associated set id.
-     * TODO implement:Padraic
-     *
-     * @param set_id The ID of the set this dice belongs to.
+     * Saves this dice in the database.
      */
-    public void save(int set_id) {
+    public void save() {
+        DiceDBOpenHelper.getDB().saveDice(this);
     }
 
     /**
