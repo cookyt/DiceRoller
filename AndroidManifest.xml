@@ -4,8 +4,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="15" />
+        android:minSdkVersion="10"
+        android:targetSdkVersion="10" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -23,7 +23,6 @@
 
         <activity
             android:name=".SetCreatorActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:label="@string/title_creator" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -32,7 +31,6 @@
 
         <activity
             android:name=".EditSetActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:label="@string/title_creator" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
