@@ -152,10 +152,16 @@ public class EditSetActivity extends FragmentActivity
         }
     }
 
+    /**
+     * Listener for the delete button on the edit page. Deletes the set from
+     * the DB, removes it from the dice sets in the global state, and removes
+     * it from the user's active selection if needed.
+     */
     class DeleteClickListener implements View.OnClickListener {
         public void onClick(View v) {
             DiceRollerState.getState().diceSets().remove(set_position);
-            //TODO delete dice set from database.
+            DiceRollerState.getState().activeSelection().remove(set);
+            set.delete();
             setResult(Activity.RESULT_OK);
             finish();
         }
@@ -176,9 +182,9 @@ public class EditSetActivity extends FragmentActivity
             }
 
             if (non_empty) {
-                DiceRollerState.getState().diceSets().remove(set_position);
-                DiceRollerState.getState().diceSets().add(set_position, new_set);
-                //TODO delete old dice from database
+                DiceRollerState.getState().diceSets().set(set_position, new_set);
+                DiceRollerState.getState().activeSelection().remove(set);
+                set.delete();
                 new_set.save();
                 setResult(Activity.RESULT_OK);
             } else {

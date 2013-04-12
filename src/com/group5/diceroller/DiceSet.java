@@ -103,6 +103,14 @@ public class DiceSet
     }
 
     /**
+     * Deletes the representation of this set in the database. Also deletes all
+     * dice associated with this set.
+     */
+    public void delete() {
+        DiceDBOpenHelper.getDB().deleteSet(this);
+    }
+
+    /**
      * Adds a dice to this DiceSet. If the dice to add has the same face count
      * as another Dice in the set, its count is added into the count of the
      * Dice in the set.

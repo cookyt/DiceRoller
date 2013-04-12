@@ -65,7 +65,9 @@ public class SetChooserFragment extends ListFragment {
         if (resultCode != Activity.RESULT_OK)
             return;
         Log.i(kTag, "notifying adapter explicitly");
+
         adapter.notifyDataSetChanged();
+        selection_changed_listener.onSelectionChanged();
     }
 
     /**

@@ -78,7 +78,7 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
             values.put("set_id", set.id);
 			db.insert("set_table", null, values);
 
-		} else if (set.id != DiceSet.NOT_SAVED) {
+		} else {
             values.put("set_id", set.id);
 			db.update("set_table", values, "set_id = ?", new String[] { String.valueOf(set.id)} );
 		}
@@ -127,6 +127,8 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 	public void deleteSet(DiceSet set) {
 		
 		SQLiteDatabase db = this.getWritableDatabase();
+
+        Log.i(kTag, "deleting id: "+set.id);
 		
 		db.delete("set_table", "set_id = ?", new String[] { String.valueOf(set.id) });
 		db.delete("dice_table", "set_id = ?", new String[] { String.valueOf(set.id) });
@@ -138,7 +140,8 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		db.delete("dice_table", "set_id = ? AND faces = ?", new String[] { String.valueOf(die.set_id), String.valueOf(die.faces) });
+		db.delete("dice_table", "set_id = ? AND faces = ?",
+            new String[] { String.valueOf(die.set_id), String.valueOf(die.faces) });
 		
 		db.close();
 	}
