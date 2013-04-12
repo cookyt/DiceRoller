@@ -58,6 +58,7 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
 		db.execSQL("DROP TABLE IF EXISTS set_table");
+		db.execSQL("DROP TABLE IF EXISTS dice_table");
 		onCreate(db);
 	}
 	
@@ -80,7 +81,10 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 
 		} else {
             values.put("set_id", set.id);
-			db.update("set_table", values, "set_id = ?", new String[] { String.valueOf(set.id)} );
+        
+            // delete all old dice; easier than finding whether dice have been removed
+            db.delete("dice_table", "set_id = ?", new String[] { String.valueOf(set.id) });
+            db.update("set_table", values, "set_id = ?", new String[] { String.valueOf(set.id)} );
 		}
 
         for (Dice die : set) {
@@ -90,58 +94,29 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 		
 		db.close();
 	}
-
-    public void saveDice(Dice die) {
-		SQLiteDatabase db = this.getWritableDatabase();
-        saveDice(die, db);
-		db.close();
-    }
 	
+    /**
+     * Saves a die to the DB. Note, does not check if a given die of (id,faces)
+     * exists in the DB first, so try to always insert unique values.
+     */
 	private void saveDice(Dice die, SQLiteDatabase db) {
-		boolean exists = false;
-		
-		Cursor cursor = db.query("dice_table", 
-            new String[] {"set_id", "faces", "count"}, "set_id = ? AND faces = ?",
-            new String[] {String.valueOf(die.set_id), String.valueOf(die.faces)},
-            null, null, null, null);
-		if (cursor.getCount() != 0)
-            exists = true;
-        Log.i(kTag, String.format("Dice (%d, %d, %d) exists: " + exists, die.set_id, die.faces, die.count));
 		
 		ContentValues values = new ContentValues();
 		values.put("set_id", die.set_id);
 		values.put("faces", die.faces);
 		values.put("count", die.count);
 		
-		if (!exists) {
-			
-			db.insert("dice_table", null, values);
-		}
-		
-		if (exists) {
-			
-			db.update("dice_table", values, "set_id = ?", new String[] { String.valueOf(die.set_id) });
-		}
+        db.insert("dice_table", null, values);
 	}
 	
 	public void deleteSet(DiceSet set) {
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 
-        Log.i(kTag, "deleting id: "+set.id);
+        Log.i(kTag, "deleting set with id: "+set.id);
 		
 		db.delete("set_table", "set_id = ?", new String[] { String.valueOf(set.id) });
 		db.delete("dice_table", "set_id = ?", new String[] { String.valueOf(set.id) });
-		
-		db.close();
-	}
-	
-	public void deleteDice(Dice die) {
-		
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		db.delete("dice_table", "set_id = ? AND faces = ?",
-            new String[] { String.valueOf(die.set_id), String.valueOf(die.faces) });
 		
 		db.close();
 	}

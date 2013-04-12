@@ -173,19 +173,18 @@ public class EditSetActivity extends FragmentActivity
             int modifier_val = AddDiceDialogFragment.getNumFromEditable(modifier.getText());
 
             boolean non_empty = false;
-            DiceSet new_set = new DiceSet(set.id, name, modifier_val);
+            set.name = name;
+            set.modifier = modifier_val;
+            set.clear();
             for (Dice d : dice) {
                 if (d.count != 0) {
                     non_empty = true;
-                    new_set.add(d);
+                    set.add(d);
                 }
             }
 
             if (non_empty) {
-                DiceRollerState.getState().diceSets().set(set_position, new_set);
-                DiceRollerState.getState().activeSelection().remove(set);
-                set.delete();
-                new_set.save();
+                set.save();
                 setResult(Activity.RESULT_OK);
             } else {
                 setResult(Activity.RESULT_CANCELED);

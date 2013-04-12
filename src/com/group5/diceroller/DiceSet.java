@@ -132,6 +132,13 @@ public class DiceSet
     }
 
     /**
+     * Removes all dice from this set.
+     */
+    public void clear() {
+        dice_set.clear();
+    }
+
+    /**
      * Checks if two dice sets contain the same dice. 
      * @return True if for every Dice of a given face and count in one DiceSet,
      *   a dice with the same face and count is in the other.

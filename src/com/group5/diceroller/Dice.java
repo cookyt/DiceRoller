@@ -64,13 +64,6 @@ public class Dice
     }
 
     /**
-     * Saves this dice in the database.
-     */
-    public void save() {
-        DiceDBOpenHelper.getDB().saveDice(this);
-    }
-
-    /**
      * Returns true iff the two dice have the same count, number of faces, and
      * set id.
      *
