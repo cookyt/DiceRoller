@@ -19,11 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import android.util.Log;
 
 public class DiceRollerActivity extends FragmentActivity
-    implements ActionBar.TabListener, OnDiceRolledListener,
-    OnSelectionChangedListener {
+    implements OnDiceRolledListener, OnSelectionChangedListener {
+
+    public static String kTag = "DiceRollerActivity";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -37,6 +39,9 @@ public class DiceRollerActivity extends FragmentActivity
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+
+    ToggleButton[] tabs;
+    int selected_tab = 0;
 
     DiceRollerState state;
     SetChooserFragment chooser;
@@ -54,19 +59,16 @@ public class DiceRollerActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("DiceRollerActivity", "creating...");
+        Log.i(kTag, "Creating Dice Roller");
 
         chooser    = new SetChooserFragment();
         central    = new CentralFragment();
         statistics = new StatisticsFragment();
 
+
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -77,32 +79,26 @@ public class DiceRollerActivity extends FragmentActivity
         // Tab.
         mViewPager.setOnPageChangeListener(new PageChangeListener());
 
-        // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by the adapter.
-            // Also specify this Activity object, which implements the TabListener interface, as the
-            // listener for when this tab is selected.
-            actionBar.addTab(actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
+        // Set up tabs
+        int[] tab_ids = new int[] {R.id.chooser_button, R.id.central_button, R.id.statistics_button};
+        tabs = new ToggleButton[3];
+        for (int i=0; i<tabs.length; ++i)
+        {
+            tabs[i] = (ToggleButton) findViewById(tab_ids[i]);
+            tabs[i].setOnClickListener(new TabButtonClickedListener(i));
         }
+        setTabSelected(1);
 
         // Move the pager to the center item
         mViewPager.setCurrentItem(1, false);
         state = DiceRollerState.getState();
     }
 
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in the ViewPager.
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
+    /**
+     * Callback for when the user rolls the dice in the selection. Currently,
+     * it randomizes the dice in the active selection, adds it to the dice
+     * history, and sets the view to the statistics.
+     */
     public void onDiceRolled() {
         // play possible animations/sound here
         state.activeSelection().roll();
@@ -118,23 +114,48 @@ public class DiceRollerActivity extends FragmentActivity
         mViewPager.setCurrentItem(2);
     }
 
+    /**
+     * Callback for when user changes the dice in the active selection.
+     */
     public void onSelectionChanged() {
         central.updateSelectionText();
     }
 
+    /**
+     * Sets the tab in the given position to be selected.
+     */
+    public void setTabSelected(int position) {
+        tabs[selected_tab].setChecked(false);
+        tabs[position].setChecked(true);
+        selected_tab = position;
+    }
 
-    class PageChangeListener extends ViewPager.SimpleOnPageChangeListener {
-        ActionBar actionbar;
-        public PageChangeListener() {
-            actionbar = getActionBar();
+
+    /**
+     * Click listener for tab buttons.
+     */
+    class TabButtonClickedListener implements View.OnClickListener {
+        int position;
+        public TabButtonClickedListener(int position) {
+            this.position = position;
         }
 
-        @Override
-        public void onPageSelected(int position) {
-            actionbar.setSelectedNavigationItem(position);
+        public void onClick(View v) {
+            setTabSelected(position);
+            mViewPager.setCurrentItem(position);
         }
     }
 
+    /**
+     * Handles setting the correct tab button selected when the page is changed
+     * with a swipe.
+     */
+    class PageChangeListener extends ViewPager.SimpleOnPageChangeListener {
+        @Override
+        public void onPageSelected(int position) {
+            setTabSelected(position);
+        }
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
