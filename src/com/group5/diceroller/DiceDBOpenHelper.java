@@ -22,7 +22,7 @@ import android.util.Log;
  * @Author Padraic Baker
  */
 public class DiceDBOpenHelper extends SQLiteOpenHelper {
-	
+
 	private static final String DATABASE_NAME = "DiceRoller";
 	private static final int DATABASE_VERSION = 2;
     public static final String kTag = "DiceDBHelper";
@@ -48,35 +48,35 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		
+
 		String Create_String = "CREATE TABLE dice_table (set_id int, " +
 														"faces int, " +
 				                                        "count int)";
-		
+
 		db.execSQL(Create_String);
-		
+
 		Create_String = "CREATE TABLE set_table (set_id int, " +
 												"name String)";
-		
+
 		db.execSQL(Create_String);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
+
 		db.execSQL("DROP TABLE IF EXISTS set_table");
 		db.execSQL("DROP TABLE IF EXISTS dice_table");
 		onCreate(db);
 	}
-	
+
 	public void saveSet(DiceSet set) {
 		Log.i(kTag, "Saving DiceSet: "+set.description());
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+
         ContentValues values = new ContentValues();
         values.put("name", set.name);
-		
-		if (set.id == DiceSet.NOT_SAVED) {		
+
+		if (set.id == DiceSet.NOT_SAVED) {
 			Cursor cursor = db.rawQuery("SELECT set_id FROM set_table ORDER BY set_id DESC LIMIT 1", null);
             if (!cursor.moveToFirst())
                 set.id = 0;
@@ -88,7 +88,7 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 
 		} else {
             values.put("set_id", set.id);
-        
+
             // delete all old dice; easier than finding whether dice have been removed
             db.delete("dice_table", "set_id = ?", new String[] { String.valueOf(set.id) });
             db.update("set_table", values, "set_id = ?", new String[] { String.valueOf(set.id)} );
@@ -98,43 +98,43 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
             die.set_id = set.id;
             saveDice(die, db);
         }
-		
+
 		db.close();
 	}
-	
+
     /**
      * Saves a die to the DB. Note, does not check if a given die of (id,faces)
      * exists in the DB first, so try to always insert unique values.
      */
 	private void saveDice(Dice die, SQLiteDatabase db) {
-		
+
 		ContentValues values = new ContentValues();
 		values.put("set_id", die.set_id);
 		values.put("faces", die.faces);
 		values.put("count", die.count);
-		
+
         db.insert("dice_table", null, values);
 	}
-	
+
 	public void deleteSet(DiceSet set) {
-		
+
 		SQLiteDatabase db = this.getWritableDatabase();
 
         Log.i(kTag, "deleting set with id: "+set.id);
-		
+
 		db.delete("set_table", "set_id = ?", new String[] { String.valueOf(set.id) });
 		db.delete("dice_table", "set_id = ?", new String[] { String.valueOf(set.id) });
-		
+
 		db.close();
 	}
-	
+
 	public ArrayList<DiceSet> loadSets()
     {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<DiceSet> setList = new ArrayList<DiceSet>();
-		
+
 		Cursor cursor = db.rawQuery("SELECT set_id, name FROM set_table", null);
-		
+
 		if (cursor.moveToFirst()) {
 			do {
                 int id = cursor.getInt(0);
@@ -147,11 +147,11 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 				setList.add(set);
 			} while (cursor.moveToNext());
 		}
-		
+
 		db.close();
 		return setList;
 	}
-	
+
     /**
      * Loads the dice associated with the set id of the given set into the
      * given set.
@@ -160,16 +160,16 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
      * @param db The database to load from
      */
 	private void loadDice(DiceSet set, SQLiteDatabase db) {
-		
+
 		Cursor cursor = db.rawQuery(
             "SELECT faces, count FROM dice_table WHERE set_id = ?",
             new String[] { String.valueOf(set.id) });
-		
+
 		if (cursor.moveToFirst()) {
 			do {
 				int faces = cursor.getInt(0);
 				int count = cursor.getInt(1);
-				
+
 				set.add(new Dice(faces, count, set.id));
 			} while (cursor.moveToNext());
 		}
@@ -178,7 +178,7 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
     static class LoggingCursorFactory implements SQLiteDatabase.CursorFactory {
         public Cursor newCursor(SQLiteDatabase db,
             SQLiteCursorDriver driver, String editTable, SQLiteQuery query) {
-            
+
             Log.i(kTag, query.toString());
             return new SQLiteCursor(db, driver, editTable, query);
         }
