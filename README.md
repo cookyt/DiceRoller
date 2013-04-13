@@ -9,13 +9,12 @@ Build Instructions
 + [Android SDK][android] version 11 or higher
 + [JDK][jdk] version 1.6 or higher
 
-You can compile with Eclipse or over the command line using the standard SDK
-tools. Compiling with eclipse requires that you have the Android ADT Eclipse
-plugin installed. You can download a version of Eclipse with ADT installed from
-the above link. Command line compilation requires [Apache Ant][ant]. The `$` in
-the below steps indicate a command shell. For more information visit the
-official android documentation pages on [building android apps on the command
-line][cmdbuild] and [signing apps][sign].
+Command line compilation requires [Apache Ant][ant]. The `$` in the below steps
+indicate a command shell. It is also possible to compile the app as an Eclipse
+project using the ADT plugin for Eclipse. This README will not go over the
+process for compiling with Eclipse, but for more information visit the official
+android documentation pages on building android apps[On the command
+line][cmdbuild], [from Eclipse][eclipsebuild], and [signing apps][sign].
 
 ### 1. Set up your environment
 Create the ant build files by running:
@@ -79,5 +78,6 @@ sub menu.
 [android]: http://developer.android.com/sdk/index.html
 [jdk]: http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
 [ant]: http://ant.apache.org/
-[cmdbuild]:http://developer.android.com/tools/building/building-cmdline.html 
+[cmdbuild]: http://developer.android.com/tools/building/building-cmdline.html 
+[eclipsebuild]: http://developer.android.com/tools/building/building-eclipse.html
 [sign]: http://developer.android.com/tools/publishing/app-signing.html
