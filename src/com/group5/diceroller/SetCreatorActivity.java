@@ -2,6 +2,7 @@ package com.group5.diceroller;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -26,6 +27,12 @@ public class SetCreatorActivity extends FragmentActivity
     Button cancel_button;
     List<Dice> dice;
     DiceListAdapter dice_adapter;
+
+    // Keeps track of what text field uses what watcher because there's no way
+    // to remove all watchers from a text field, and text fields are reused for
+    // different dice in the dice list, so setting the text of one
+    // programmatically might cause changes to the wrong dice object.
+    HashMap<EditText, TextWatcher> registered_watchers;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,13 +96,15 @@ public class SetCreatorActivity extends FragmentActivity
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
+                holder.count.removeTextChangedListener(registered_watchers.get(holder.count));
+                registered_watchers.remove(holder.count);
             }
 
             final Dice represented_dice = dice.get(position);
             holder.faces.setText("D" + represented_dice.faces);
             holder.count.setText("" + represented_dice.count);
 
-            holder.count.addTextChangedListener(new TextWatcher() {
+            TextWatcher watcher = new TextWatcher() {
                 public void afterTextChanged(Editable s) {
                     int count = AddDiceDialogFragment.getNumFromEditable(s);
                     represented_dice.count = count;
@@ -108,7 +117,9 @@ public class SetCreatorActivity extends FragmentActivity
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     // Intentionally emtpy
                 }
-            });
+            };
+            holder.count.addTextChangedListener(watcher);
+            registered_watchers.put(holder.count, watcher);
 
             holder.delete_button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
