@@ -3,38 +3,11 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout 
-        android:id="@+id/statistic_mode_switch_buttons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <ToggleButton
-            android:id="@+id/change_view_button"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:textOn="@string/last_roll"
-            android:textOff="@string/all_rolls"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
     <ListView
         android:id="@+id/all_rolls_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:visibility="gone" />
-
-    <ScrollView
-        android:id="@+id/last_roll_scroller"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <include
-            android:id="@+id/last_roll_view"
-            layout="@layout/statistics_row" />
-
-    </ScrollView>
 
     <TextView
         android:id="@+id/no_statistics_message"

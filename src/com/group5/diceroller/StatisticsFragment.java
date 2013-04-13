@@ -22,12 +22,9 @@ import android.app.Activity;
 public class StatisticsFragment extends Fragment {
     DiceRollerState state;
 
-    ToggleButton change_view_button;
     TextView no_statistics_message;
     ListView all_rolls;
     HistoryAdapter all_rolls_adapter;
-    View last_roll;
-    View last_roll_scroller;
 
     public static final String kTag = "StatisticsFrag";
     public static final int kDicePerRow = 5;
@@ -47,23 +44,9 @@ public class StatisticsFragment extends Fragment {
 
         no_statistics_message = (TextView) (layout.findViewById(R.id.no_statistics_message));
 
-        change_view_button = (ToggleButton) (layout.findViewById(R.id.change_view_button));
-        change_view_button.setOnClickListener(new ViewChangeOnClick());
-
-        last_roll_scroller = layout.findViewById(R.id.last_roll_scroller);
-        last_roll = layout.findViewById(R.id.last_roll_view);
-
-        ViewHolder holder = new ViewHolder();
-        holder.rolls = (LinearLayout) (last_roll.findViewById(R.id.dice_rolls_grid));
-        holder.date_text = (TextView) (last_roll.findViewById(R.id.date_text));
-        last_roll.setTag(holder);
-
         all_rolls = (ListView) layout.findViewById(R.id.all_rolls_view);
         all_rolls_adapter = new HistoryAdapter();
         all_rolls.setAdapter(all_rolls_adapter);
-
-        if (last_roll.getVisibility() == View.VISIBLE && state.rollHistory().size() > 0)
-            populateStatsRow(last_roll, 0);
 
         chooseChangeButtonEnable();
         return layout;
@@ -78,7 +61,7 @@ public class StatisticsFragment extends Fragment {
      * @param position The position in the roll history of the selection to represent
      */
     private void populateStatsRow(View view, int position) {
-        Log.i(kTag, "Populating last roll view");
+        Log.i(kTag, "Populating roll view");
 
         SetSelection selection = state.rollHistory().get(position);
         ViewHolder holder = (ViewHolder) view.getTag();
@@ -123,22 +106,11 @@ public class StatisticsFragment extends Fragment {
 
         if (state.rollHistory().size() > 0) {
             no_statistics_message.setVisibility(View.GONE);
-            change_view_button.setEnabled(true);
-
-            if (change_view_button.isChecked()) {
-                all_rolls.setVisibility(View.GONE);
-                last_roll_scroller.setVisibility(View.VISIBLE);
-            } else {
-                all_rolls.setVisibility(View.VISIBLE);
-                last_roll_scroller.setVisibility(View.GONE);
-            }
+            all_rolls.setVisibility(View.VISIBLE);
 
         } else {
             no_statistics_message.setVisibility(View.VISIBLE);
-            change_view_button.setEnabled(false);
-
             all_rolls.setVisibility(View.GONE);
-            last_roll_scroller.setVisibility(View.GONE);
         }
     }
 
@@ -147,7 +119,6 @@ public class StatisticsFragment extends Fragment {
      */
     public void update() {
         chooseChangeButtonEnable();
-        populateStatsRow(last_roll, 0);
         all_rolls_adapter.notifyDataSetChanged();
     }
 
@@ -199,22 +170,6 @@ public class StatisticsFragment extends Fragment {
             col = 0;
         }
 
-    }
-
-    class ViewChangeOnClick implements View.OnClickListener {
-        public void onClick(View v) {
-            ToggleButton btn = (ToggleButton) v;
-            if (btn.isChecked())
-            {
-                last_roll_scroller.setVisibility(View.VISIBLE);
-                all_rolls.setVisibility(View.GONE);
-            }
-            else
-            {
-                last_roll_scroller.setVisibility(View.GONE);
-                all_rolls.setVisibility(View.VISIBLE);
-            }
-        }
     }
 
     class HistoryAdapter extends ArrayAdapter<SetSelection> {
