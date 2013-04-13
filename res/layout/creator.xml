@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/setname_hint"
         android:gravity="center"
+        android:singleLine="true"
         android:ems="10" />
 
     <EditText
