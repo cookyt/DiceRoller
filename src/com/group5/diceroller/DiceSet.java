@@ -6,6 +6,11 @@ import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Represents a set of dice with a name and modifier value. The dice set is the basic unit selection in the application.
+ *
+ * @Author Wayne Rodenburg
+ */
 public class DiceSet
     implements Iterable<Dice> {
 

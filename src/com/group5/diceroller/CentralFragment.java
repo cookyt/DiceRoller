@@ -9,11 +9,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.os.Bundle;
 
+/**
+ * Fragment which represents the central screen of the app. User can press the
+ * roll button or view what is in the current dice selection on this screen.
+ *
+ * @Author Carlos Valera
+ */
 public class CentralFragment extends Fragment {
     OnDiceRolledListener rolled_listener;
     DiceRollerState state;
     TextView selection_text;
     Button roll_button;
+
+    /**
+     * Interface which is called when a dice is rolled.
+     */
+    public static interface OnDiceRolledListener {
+        public void onDiceRolled();
+    }
 
     @Override
     /**

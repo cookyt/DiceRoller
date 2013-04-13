@@ -13,6 +13,12 @@ import android.content.DialogInterface;
 import android.text.Editable;
 import android.util.Log;
 
+/**
+ * Fragment for a context dialog which asks the user to select a face count for
+ * a dice.
+ *
+ * @Author Carlos Valera
+ */
 public class AddDiceDialogFragment extends DialogFragment {
     public interface AddDiceListener {
         public void addDice(int num_faces);

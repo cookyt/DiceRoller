@@ -18,6 +18,13 @@ import android.widget.EditText;
 import android.text.TextWatcher;
 import android.text.Editable;
 
+
+/**
+ * Adapter class for the list of dice in either the Set Creator or the Set
+ * Editor.
+ *
+ * @Author Carlos Valera
+ */
 class DiceListAdapter extends ArrayAdapter<Dice> {
 
     FragmentActivity activity;

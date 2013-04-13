@@ -22,8 +22,14 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.util.Log;
 
+/**
+ * Main activity for the application.
+ *
+ * @Author Carlos Valera
+ */
 public class DiceRollerActivity extends FragmentActivity
-    implements OnDiceRolledListener, OnSelectionChangedListener {
+    implements CentralFragment.OnDiceRolledListener,
+    SetChooserFragment.OnSelectionChangedListener {
 
     public static String kTag = "DiceRollerActivity";
 

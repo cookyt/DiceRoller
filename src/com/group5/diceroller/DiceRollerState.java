@@ -7,6 +7,8 @@ import java.util.Date;
 /**
  * Singleton class representing the state of the dice in the dice roller. It
  * stores the active set, the selectable dice sets, and the roll history.
+ *
+ * @Author Carlos Valera
  */
 public class DiceRollerState {
     List<DiceSet> dice_sets;

@@ -4,6 +4,11 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**
+ * Encapsulates the dice sets chosen to be rolled on the next roll.
+ *
+ * @Author Carlos Valera
+ */
 public class SetSelection
     implements Iterable<DiceSet> {
 

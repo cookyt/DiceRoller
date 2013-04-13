@@ -19,6 +19,11 @@ import android.text.TextWatcher;
 import android.text.Editable;
 import android.util.Log;
 
+/**
+ * Activity which allows the editing of an existing dice set.
+ *
+ * @Author Carlos Valera
+ */
 public class EditSetActivity extends FragmentActivity
     implements AddDiceDialogFragment.AddDiceListener {
 

@@ -3,6 +3,12 @@ package com.group5.diceroller;
 import org.random.rjgodoy.trng.MH_SecureRandom;
 import java.security.SecureRandom;
 
+
+/**
+ * Encapsulates random number generation for the application.
+ *
+ * @Author Ryan Pearce
+ */
 public class Random {
     
 ///@TODO - Use MH_SecureRandom with correct HTTP settings to access random.org

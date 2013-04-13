@@ -19,6 +19,11 @@ import android.util.Log;
 import android.os.Bundle;
 import android.app.Activity;
 
+/**
+ * Fragment which shows the history of dice rolls.
+ *
+ * @Author Carlos Valera
+ */
 public class StatisticsFragment extends Fragment {
     DiceRollerState state;
 

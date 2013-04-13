@@ -14,6 +14,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.content.Intent;
 
+/**
+ * Fragment for choosing the set in the active selection.
+ *
+ * @Author Carlos Valera
+ */
 public class SetChooserFragment extends ListFragment {
     public static final String kTag = "SetChooserFrag";
     public static final int kUpdateSets = 0;
@@ -21,6 +26,10 @@ public class SetChooserFragment extends ListFragment {
     DiceRollerState state;
     OnSelectionChangedListener selection_changed_listener;
     DiceSelectionAdapter adapter;
+
+    public static interface OnSelectionChangedListener {
+        public void onSelectionChanged();
+    }
 
     @Override
     /**

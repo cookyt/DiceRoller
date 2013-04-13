@@ -14,6 +14,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+/**
+ * Provides an interface to open the application database and create it if
+ * necissary. Also provides functions for saving, loading, and deleting Dice
+ * and DiceSets to the database.
+ *
+ * @Author Padraic Baker
+ */
 public class DiceDBOpenHelper extends SQLiteOpenHelper {
 	
 	private static final String DATABASE_NAME = "DiceRoller";

@@ -5,6 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Iterator;
 
+/**
+ * Represents a group of dice with the same face count belonging to a specific
+ * dice set.
+ *
+ * @Author Ryan Pearce
+ */
 public class Dice
     implements Comparable<Dice>, Iterable<Integer> {
 

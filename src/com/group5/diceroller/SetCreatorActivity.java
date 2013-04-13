@@ -18,6 +18,12 @@ import android.widget.EditText;
 import android.text.TextWatcher;
 import android.text.Editable;
 
+
+/**
+ * Activity which allows creation and saving of a new dice set.
+ *
+ * @Author Carlos Valera
+ */
 public class SetCreatorActivity extends FragmentActivity
     implements AddDiceDialogFragment.AddDiceListener {
 
