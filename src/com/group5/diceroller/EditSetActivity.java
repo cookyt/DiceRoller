@@ -119,6 +119,10 @@ public class EditSetActivity extends FragmentActivity
             String name = set_name.getText().toString();
             int modifier_val = AddDiceDialogFragment.getNumFromEditable(modifier.getText());
 
+            boolean contained = false;
+            if (DiceRollerState.getState().activeSelection().remove(set))
+                contained = true;
+
             boolean non_empty = false;
             set.name = name;
             set.modifier = modifier_val;
@@ -132,6 +136,8 @@ public class EditSetActivity extends FragmentActivity
 
             if (non_empty) {
                 set.save();
+                if (contained)
+                    DiceRollerState.getState().activeSelection().add(set);
                 setResult(Activity.RESULT_OK);
             } else {
                 setResult(Activity.RESULT_CANCELED);
