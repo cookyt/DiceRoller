@@ -193,7 +193,7 @@ public class DiceSet
      * Returns the sum of the dice in this set.
      */
     public int sum() {
-        int sum = 0;
+        int sum = modifier;
         for (Dice d : dice_set) {
             for (Integer i : d) {
                 sum += i.intValue();
