@@ -13,7 +13,7 @@ Command line compilation requires [Apache Ant][ant]. The `$` in the below steps
 indicate a command shell. It is also possible to compile the app as an Eclipse
 project using the ADT plugin for Eclipse. This README will not go over the
 process for compiling with Eclipse, but for more information visit the official
-android documentation pages on building android apps[On the command
+android documentation pages on building android apps [on the command
 line][cmdbuild], [from Eclipse][eclipsebuild], and [signing apps][sign].
 
 ### 1. Set up your environment
