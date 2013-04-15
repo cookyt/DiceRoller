@@ -56,7 +56,8 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 		db.execSQL(Create_String);
 
 		Create_String = "CREATE TABLE set_table (set_id int, " +
-												"name String)";
+												"name String," +
+												"modifier int)";
 
 		db.execSQL(Create_String);
 	}
@@ -84,10 +85,13 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
                 set.id = (cursor.getInt(0) + 1);
 
             values.put("set_id", set.id);
+            values.put("modifier", set.modifier);
+            
 			db.insert("set_table", null, values);
 
 		} else {
             values.put("set_id", set.id);
+            values.put("modifier", set.modifier);
 
             // delete all old dice; easier than finding whether dice have been removed
             db.delete("dice_table", "set_id = ?", new String[] { String.valueOf(set.id) });
