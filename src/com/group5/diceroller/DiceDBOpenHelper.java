@@ -137,7 +137,7 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<DiceSet> setList = new ArrayList<DiceSet>();
 
-		Cursor cursor = db.rawQuery("SELECT set_id, name FROM set_table", null);
+		Cursor cursor = db.rawQuery("SELECT set_id, name, modifier FROM set_table", null);
 
 		if (cursor.moveToFirst()) {
 			do {
