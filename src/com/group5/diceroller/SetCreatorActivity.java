@@ -97,7 +97,14 @@ public class SetCreatorActivity extends FragmentActivity
             boolean non_empty = false;
             DiceSet set = new DiceSet(name, modifier_val);
             for (Dice d : dice) {
-                if (d.count != 0) {
+                if (d.count < Dice.kMinCount || d.count > Dice.kMaxCount)
+                {
+                    String text = String.format("The count of each dice must be between %d and %d", Dice.kMinCount, Dice.kMaxCount);
+                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else
+                {
                     non_empty = true;
                     set.add(d);
                 }

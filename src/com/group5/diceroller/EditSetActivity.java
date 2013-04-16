@@ -127,6 +127,17 @@ public class EditSetActivity extends FragmentActivity
             String name = set_name.getText().toString();
             int modifier_val = AddDiceDialogFragment.getNumFromEditable(modifier.getText());
 
+            // Two iterations? How inefficient!
+            for (Dice d : dice)
+            {
+                if (d.count < Dice.kMinCount || d.count > Dice.kMaxCount)
+                {
+                    String text = String.format("The count of each dice must be between %d and %d", Dice.kMinCount, Dice.kMaxCount);
+                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
             boolean contained = false;
             if (DiceRollerState.getState().activeSelection().remove(set))
                 contained = true;
