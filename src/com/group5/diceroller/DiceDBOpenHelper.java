@@ -24,7 +24,7 @@ import android.util.Log;
 public class DiceDBOpenHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "DiceRoller";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
     public static final String kTag = "DiceDBHelper";
 
     private static DiceDBOpenHelper db_helper = null;
@@ -54,11 +54,9 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 				                                        "count int)";
 
 		db.execSQL(Create_String);
-
 		Create_String = "CREATE TABLE set_table (set_id int, " +
 												"name String," +
 												"modifier int)";
-
 		db.execSQL(Create_String);
 	}
 
@@ -76,6 +74,7 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put("name", set.name);
+        values.put("modifier", set.modifier);
 
 		if (set.id == DiceSet.NOT_SAVED) {
 			Cursor cursor = db.rawQuery("SELECT set_id FROM set_table ORDER BY set_id DESC LIMIT 1", null);
@@ -85,13 +84,11 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
                 set.id = (cursor.getInt(0) + 1);
 
             values.put("set_id", set.id);
-            values.put("modifier", set.modifier);
-            
+
 			db.insert("set_table", null, values);
 
 		} else {
             values.put("set_id", set.id);
-            values.put("modifier", set.modifier);
 
             // delete all old dice; easier than finding whether dice have been removed
             db.delete("dice_table", "set_id = ?", new String[] { String.valueOf(set.id) });
@@ -143,7 +140,7 @@ public class DiceDBOpenHelper extends SQLiteOpenHelper {
 			do {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                int modifier = 0;
+                int modifier = cursor.getInt(2);
 
 				DiceSet set = new DiceSet(id, name, modifier);
                 loadDice(set, db);
