@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
@@ -82,7 +83,14 @@ public class EditSetActivity extends FragmentActivity
 
     public void addDice(int num_faces) {
         if (num_faces <= 1)
+        {
+            Context context = getApplicationContext();
+            CharSequence text = "Cannot have fewer than two faces";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
             return;
+        }
         for (Dice d : dice) {
             if (d.faces == num_faces)
                 return;
