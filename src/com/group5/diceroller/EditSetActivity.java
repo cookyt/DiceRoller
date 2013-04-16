@@ -59,7 +59,7 @@ public class EditSetActivity extends FragmentActivity
         modifier.setText("" + set.modifier);
 
         for (Dice d : set)
-            dice.add(d);
+            dice.add(new Dice(d));
 
         save_button = (Button)findViewById(R.id.save_button);
         save_button.setOnClickListener(new SaveClickListener());
@@ -124,9 +124,6 @@ public class EditSetActivity extends FragmentActivity
 
     class SaveClickListener implements View.OnClickListener {
         public void onClick(View v) {
-            String name = set_name.getText().toString();
-            int modifier_val = AddDiceDialogFragment.getNumFromEditable(modifier.getText());
-
             // Two iterations? How inefficient!
             for (Dice d : dice)
             {
@@ -137,6 +134,9 @@ public class EditSetActivity extends FragmentActivity
                     return;
                 }
             }
+
+            String name = set_name.getText().toString();
+            int modifier_val = AddDiceDialogFragment.getNumFromEditable(modifier.getText());
 
             boolean contained = false;
             if (DiceRollerState.getState().activeSelection().remove(set))
@@ -152,11 +152,11 @@ public class EditSetActivity extends FragmentActivity
                     set.add(d);
                 }
             }
+            if (contained)
+                DiceRollerState.getState().activeSelection().add(set);
 
             if (non_empty) {
                 set.save();
-                if (contained)
-                    DiceRollerState.getState().activeSelection().add(set);
                 setResult(Activity.RESULT_OK);
                 finish();
             } else {
