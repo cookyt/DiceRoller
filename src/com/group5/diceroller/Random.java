@@ -44,7 +44,7 @@ public class Random {
                 throw new IllegalArgumentException(
                         "The die cannot have negative valued sides.");
             }
-            return (roller.nextInt(this.max_value - this.min_value) + min_value);
+            return (roller.nextInt(this.max_value - this.min_value + 1) + min_value);
         }
     }
 
