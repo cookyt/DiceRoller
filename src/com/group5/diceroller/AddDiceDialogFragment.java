@@ -8,10 +8,13 @@ import android.app.Dialog;
 import android.view.ViewGroup;
 import android.view.View;
 import android.view.LayoutInflater;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.content.DialogInterface;
 import android.text.Editable;
 import android.util.Log;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 
 /**
  * Fragment for a context dialog which asks the user to select a face count for
@@ -49,7 +52,15 @@ public class AddDiceDialogFragment extends DialogFragment {
             }
         });
         builder.setNegativeButton(R.string.add_dice_cancel, null);
-        return builder.create();
+
+        final Dialog dialog = builder.create();
+        dialog.setOnShowListener(new OnShowListener() {
+            public void onShow(DialogInterface d) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(user_input, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+        return dialog;
     }
 
     public static int getNumFromEditable(Editable e) {
