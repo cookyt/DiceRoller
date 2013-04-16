@@ -65,22 +65,21 @@ public class SetCreatorActivity extends FragmentActivity
     }
 
     public void addDice(int num_faces) {
-        if (num_faces <= 1)
+        if (num_faces < Dice.kMinFaces || num_faces > Dice.kMaxFaces)
         {
-            Context context = getApplicationContext();
-            CharSequence text = "Cannot have fewer than two faces";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-            return;
+            String text = String.format("Number of faces must be between %d and %d", Dice.kMinFaces, Dice.kMaxFaces);
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         }
-        for (Dice d : dice) {
-            if (d.faces == num_faces)
-                return;
+        else
+        {
+            for (Dice d : dice) {
+                if (d.faces == num_faces)
+                    return;
+            }
+            Dice d = new Dice(num_faces, 1);
+            dice.add(d);
+            dice_adapter.notifyDataSetChanged();
         }
-        Dice d = new Dice(num_faces, 1);
-        dice.add(d);
-        dice_adapter.notifyDataSetChanged();
     }
 
     class CancelClickListener implements View.OnClickListener {
@@ -108,11 +107,11 @@ public class SetCreatorActivity extends FragmentActivity
                 DiceRollerState.getState().diceSets().add(set);
                 set.save();
                 setResult(Activity.RESULT_OK);
+                finish();
             } else {
-                setResult(Activity.RESULT_CANCELED);
+                String text = "Cannot add empty dice set";
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             }
-
-            finish();
         }
     }
 

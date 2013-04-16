@@ -19,6 +19,12 @@ public class Dice
     int set_id; // ID of the set this dice belongs to.
     List<Integer> last_roll; // List of rolled values.
 
+    public static final int kMinFaces = 2;
+    public static final int kMaxFaces = 999;
+
+    public static final int kMinCount = 1;
+    public static final int kMaxCount = 999;
+
     // Default constructor, intended to use set() functions after creation
     public Dice() {
         faces = 6;
