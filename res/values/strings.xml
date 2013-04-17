@@ -23,5 +23,7 @@
     <string name="add_dice_cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="title_editor">Set Editor</string>
+    <string name="num_rolls_label">Rolls:</string>
+    <string name="avg_rolls_label">AVG:</string>
 
 </resources>

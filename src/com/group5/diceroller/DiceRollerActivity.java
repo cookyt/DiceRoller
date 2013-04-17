@@ -111,13 +111,7 @@ public class DiceRollerActivity extends FragmentActivity
     public void onDiceRolled() {
         // play possible animations/sound here
         state.activeSelection().roll();
-
-        state.rollHistory().add(0, new SetSelection(state.activeSelection()));
-        state.rollDates().add(0, new Date());
-        if (state.rollHistory().size() > DiceRollerState.kHistorySize) {
-            state.rollHistory().remove(DiceRollerState.kHistorySize);
-            state.rollDates().remove(DiceRollerState.kHistorySize);
-        }
+        state.updateRollHistory();
 
         statistics.update();
         mViewPager.setCurrentItem(2);

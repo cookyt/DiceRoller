@@ -16,6 +16,9 @@ public class DiceRollerState {
     List<SetSelection> roll_history;
     List<Date> roll_dates;
 
+    SumCountPair dice_rolled;
+    int num_rolls;
+
     public static final int kHistorySize = 20;
 
     static DiceRollerState state = null;
@@ -28,6 +31,8 @@ public class DiceRollerState {
         roll_dates = new LinkedList<Date>();
         dice_sets = DiceSet.LoadAllFromDB();
         active_selection = new SetSelection();
+        num_rolls = 0;
+        dice_rolled = new SumCountPair();
     }
 
     public static void initialize() {
@@ -51,11 +56,56 @@ public class DiceRollerState {
         return active_selection;
     }
 
+    public void updateRollHistory() {
+        // update statistics
+        num_rolls += 1;
+        for (DiceSet s : activeSelection())
+        {
+            for (Dice d : s)
+            {
+                dice_rolled.count += d.count;
+            }
+            dice_rolled.sum += s.sum() - s.modifier;
+        }
+
+        // update history
+        rollHistory().add(0, new SetSelection(activeSelection()));
+        rollDates().add(0, new Date());
+        if (rollHistory().size() > kHistorySize) {
+            rollHistory().remove(kHistorySize);
+            rollDates().remove(kHistorySize);
+        }
+    }
+
     public List<SetSelection> rollHistory() {
         return roll_history;
     }
 
     public List<Date> rollDates() {
         return roll_dates;
+    }
+
+    public double getAvgRolls() {
+        return dice_rolled.avg();
+    }
+
+    public int getNumRolls() {
+        return num_rolls;
+    }
+}
+
+class SumCountPair {
+    int sum;
+    int count;
+
+    SumCountPair() {
+        sum = 0;
+        count = 0;
+    }
+
+    double avg() {
+        if (count == 0)
+            return 0;
+        return ((double) sum) / ((double) count);
     }
 }

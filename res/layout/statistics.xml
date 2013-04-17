@@ -3,17 +3,55 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0px" >
+
+        <TextView
+            android:id="@+id/num_rolls_text"
+            android:layout_weight="1"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/num_rolls_label" />
+
+        <TextView
+            android:id="@+id/num_rolls_val_text"
+            android:layout_weight="1"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/avg_rolls_text"
+            android:layout_weight="1"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/avg_rolls_label" />
+
+        <TextView
+            android:id="@+id/avg_rolls_val_text"
+            android:layout_weight="1"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:gravity="center" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/all_rolls_view"
+        android:layout_weight="8"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0px"
         android:visibility="gone" />
 
     <TextView
         android:id="@+id/no_statistics_message"
-        android:layout_weight="1"
+        android:layout_weight="8"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0px"
         android:gravity="center"
         android:text="@string/no_statistics" />
 

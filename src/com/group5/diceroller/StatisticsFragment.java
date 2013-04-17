@@ -28,6 +28,9 @@ public class StatisticsFragment extends Fragment {
     DiceRollerState state;
 
     TextView no_statistics_message;
+    TextView avg_rolls;
+    TextView num_rolls;
+
     ListView all_rolls;
     HistoryAdapter all_rolls_adapter;
 
@@ -53,7 +56,10 @@ public class StatisticsFragment extends Fragment {
         all_rolls_adapter = new HistoryAdapter();
         all_rolls.setAdapter(all_rolls_adapter);
 
-        chooseChangeButtonEnable();
+        num_rolls = (TextView) layout.findViewById(R.id.num_rolls_val_text);
+        avg_rolls = (TextView) layout.findViewById(R.id.avg_rolls_val_text);
+
+        update();
         return layout;
     }
 
@@ -125,6 +131,10 @@ public class StatisticsFragment extends Fragment {
     public void update() {
         chooseChangeButtonEnable();
         all_rolls_adapter.notifyDataSetChanged();
+
+        // update statistics views
+        num_rolls.setText("" + state.getNumRolls());
+        avg_rolls.setText(String.format("%.2f", state.getAvgRolls()));
     }
 
     /**
