@@ -27,7 +27,7 @@ import android.app.Activity;
 public class StatisticsFragment extends Fragment {
     DiceRollerState state;
 
-    boolean rolls_visible = false;
+    boolean rolls_visible = true;
 
     TextView avg_rolls;
     TextView num_rolls;
@@ -130,9 +130,11 @@ public class StatisticsFragment extends Fragment {
             no_statistics_message.setVisibility(View.GONE);
             change_button.setEnabled(true);
             if (rolls_visible) {
+                change_button.setText(getResources().getString(R.string.rolls));
                 all_rolls.setVisibility(View.VISIBLE);
                 stats_view.setVisibility(View.GONE);
             } else {
+                change_button.setText(getResources().getString(R.string.stats));
                 all_rolls.setVisibility(View.GONE);
                 stats_view.setVisibility(View.VISIBLE);
             }
@@ -157,16 +159,8 @@ public class StatisticsFragment extends Fragment {
 
     class ChangeOnClickListener implements View.OnClickListener {
         public void onClick(View v) {
-            if (rolls_visible) {
-                change_button.setText(getResources().getString(R.string.rolls));
-                all_rolls.setVisibility(View.VISIBLE);
-                stats_view.setVisibility(View.GONE);
-            } else {
-                change_button.setText(getResources().getString(R.string.stats));
-                all_rolls.setVisibility(View.GONE);
-                stats_view.setVisibility(View.VISIBLE);
-            }
             rolls_visible = !rolls_visible;
+            update();
         }
     }
 
