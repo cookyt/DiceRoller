@@ -128,7 +128,7 @@ public class DiceRollerState {
         } else if (pair == null) {
             pair = new SumCountPair();
             pair.faces = faces;
-            per_dice_stats.add(i-1, pair);
+            per_dice_stats.add(i, pair);
         }
 
         pair.sum += sum;
