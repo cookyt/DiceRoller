@@ -39,6 +39,7 @@ public class StatisticsFragment extends Fragment {
     Button change_button;
 
     HistoryAdapter all_rolls_adapter;
+    PerDiceAdapter per_dice_stats_adapter;
 
     public static final String kTag = "StatisticsFrag";
     public static final int kDicePerRow = 5;
@@ -69,6 +70,17 @@ public class StatisticsFragment extends Fragment {
         change_button = (Button) layout.findViewById(R.id.change_button);
         change_button.setOnClickListener(new ChangeOnClickListener());
 
+        per_dice_stats = (ListView) layout.findViewById(R.id.per_dice_stats_list);
+
+        /* View header = inflater.inflate(R.layout.per_dice, container, false); */
+        /* ((TextView) (header.findViewById(R.id.per_dice_face))).setText(getResources().getString(R.string.per_dice_face)); */
+        /* ((TextView) (header.findViewById(R.id.per_dice_count))).setText(getResources().getString(R.string.per_dice_count)); */
+        /* ((TextView) (header.findViewById(R.id.per_dice_avg))).setText(getResources().getString(R.string.per_dice_avg)); */
+        /* per_dice_stats.addHeaderView(header); */
+
+        per_dice_stats_adapter = new PerDiceAdapter();
+        per_dice_stats.setAdapter(per_dice_stats_adapter);
+
         update();
         return layout;
     }
@@ -85,7 +97,7 @@ public class StatisticsFragment extends Fragment {
         Log.i(kTag, "Populating roll view");
 
         SetSelection selection = state.rollHistory().get(position);
-        ViewHolder holder = (ViewHolder) view.getTag();
+        HistoryViewHolder holder = (HistoryViewHolder) view.getTag();
 
         Date date = state.rollDates().get(position);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM hh:mm:ss a");
@@ -151,6 +163,7 @@ public class StatisticsFragment extends Fragment {
     public void update() {
         chooseChangeButtonEnable();
         all_rolls_adapter.notifyDataSetChanged();
+        per_dice_stats_adapter.notifyDataSetChanged();
 
         // update statistics views
         num_rolls.setText("" + state.getNumRolls());
@@ -225,7 +238,7 @@ public class StatisticsFragment extends Fragment {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 row = inflater.inflate(R.layout.statistics_row, parent, false);
 
-                ViewHolder holder = new ViewHolder();
+                HistoryViewHolder holder = new HistoryViewHolder();
                 holder.rolls = (LinearLayout) (row.findViewById(R.id.dice_rolls_grid));
                 holder.date_text = (TextView) (row.findViewById(R.id.date_text));
 
@@ -236,7 +249,44 @@ public class StatisticsFragment extends Fragment {
         }
     }
 
-    static class ViewHolder {
+    class PerDiceAdapter extends ArrayAdapter<DiceRollerState.SumCountPair> {
+        public PerDiceAdapter() {
+            super(getActivity(), R.layout.per_dice, state.getPerDiceStats());
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = convertView;
+            PerViewHolder holder;
+
+            if (row == null) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                row = inflater.inflate(R.layout.per_dice, parent, false);
+
+                holder = new PerViewHolder();
+                holder.face  = (TextView) (row.findViewById(R.id.per_dice_face));
+                holder.count = (TextView) (row.findViewById(R.id.per_dice_count));
+                holder.avg   = (TextView) (row.findViewById(R.id.per_dice_avg));
+
+                row.setTag(holder);
+            } else {
+                holder = (PerViewHolder) row.getTag();
+            }
+
+            holder.face.setText("" + state.getPerDiceStats().get(position).faces);
+            holder.count.setText("" + state.getPerDiceStats().get(position).count);
+            holder.avg.setText(String.format("%.2f", state.getPerDiceStats().get(position).avg()));
+
+            return row;
+        }
+
+        class PerViewHolder {
+            TextView face;
+            TextView count;
+            TextView avg;
+        }
+    }
+
+    static class HistoryViewHolder {
         LinearLayout rolls;
         TextView date_text;
     }

@@ -2,6 +2,7 @@ package com.group5.diceroller;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class DiceRollerState {
     SetSelection active_selection;
     List<SetSelection> roll_history;
     List<Date> roll_dates;
-    TreeMap<Integer, SumCountPair> per_dice_stats;
+    List<SumCountPair> per_dice_stats;
 
     SumCountPair dice_rolled;
     int num_rolls;
@@ -35,7 +36,7 @@ public class DiceRollerState {
         active_selection = new SetSelection();
         num_rolls = 0;
         dice_rolled = new SumCountPair();
-        per_dice_stats = new TreeMap<Integer, SumCountPair>();
+        per_dice_stats = new ArrayList<SumCountPair>();
     }
 
     public static void initialize() {
@@ -67,21 +68,11 @@ public class DiceRollerState {
             for (Dice d : s)
             {
                 int dsum = d.sum();
-                int dcount = d.count;
 
-                dice_rolled.count += dcount;
                 dice_rolled.sum += dsum;
+                dice_rolled.count += d.count;
 
-                Integer key = new Integer(d.faces);
-                SumCountPair dice_stat = per_dice_stats.get(key);
-                if (dice_stat == null)
-                {
-                    dice_stat = new SumCountPair();
-                    dice_stat.faces = d.faces;
-                    per_dice_stats.put(key, dice_stat);
-                }
-                dice_stat.count += dcount;
-                dice_stat.sum += dsum;
+                addToPerDiceStat(d.faces, dsum, d.count);
             }
         }
 
@@ -110,8 +101,38 @@ public class DiceRollerState {
         return num_rolls;
     }
 
-    public TreeMap<Integer, SumCountPair> perDiceStats() {
+    public List<SumCountPair> getPerDiceStats() {
         return per_dice_stats;
+    }
+
+    public void addToPerDiceStat(int faces, int sum, int count) {
+        int i;
+        SumCountPair pair = null;
+
+        for (i=0; i<per_dice_stats.size(); i++) {
+            pair = per_dice_stats.get(i);
+            if (pair.faces == faces)
+                break;
+
+            if (pair.faces > faces)
+            {
+                pair = null;
+                break;
+            }
+        }
+
+        if (i == per_dice_stats.size()) {
+            pair = new SumCountPair();
+            pair.faces = faces;
+            per_dice_stats.add(pair);
+        } else if (pair == null) {
+            pair = new SumCountPair();
+            pair.faces = faces;
+            per_dice_stats.add(i-1, pair);
+        }
+
+        pair.sum += sum;
+        pair.count += count;
     }
 
     public static class SumCountPair {

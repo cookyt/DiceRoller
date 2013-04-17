@@ -55,6 +55,34 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false" >
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/per_dice_face"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/per_dice_count"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/per_dice_avg"/>
+
+        </LinearLayout>
+
         <ListView
             android:id="@+id/per_dice_stats_list"
             android:layout_weight="8"

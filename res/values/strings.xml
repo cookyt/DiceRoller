@@ -25,6 +25,9 @@
     <string name="title_editor">Set Editor</string>
     <string name="num_rolls_label">Rolls:</string>
     <string name="avg_rolls_label">AVG:</string>
+    <string name="per_dice_count">Number Rolled</string>
+    <string name="per_dice_avg">Average</string>
+    <string name="per_dice_face">Faces</string>
     <string name="rolls">Rolls</string>
     <string name="stats">Statistics</string>
 
