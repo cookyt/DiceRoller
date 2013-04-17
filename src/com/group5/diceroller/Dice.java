@@ -101,6 +101,17 @@ public class Dice
     }
 
     /**
+     * Gets the sum of the rolled values in this dice.
+     */
+    public int sum() {
+        int ret = 0;
+        for (Integer i : this) {
+            ret += i.intValue();
+        }
+        return ret;
+    }
+
+    /**
      * Returns an iterator over the rolled values in this Dice object.
      */
     public Iterator<Integer> iterator() {

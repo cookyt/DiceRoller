@@ -200,9 +200,7 @@ public class DiceSet
     public int sum() {
         int sum = modifier;
         for (Dice d : dice_set) {
-            for (Integer i : d) {
-                sum += i.intValue();
-            }
+            sum += d.sum();
         }
         return sum;
     }

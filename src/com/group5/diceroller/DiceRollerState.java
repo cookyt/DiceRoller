@@ -1,7 +1,9 @@
 package com.group5.diceroller;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.TreeMap;
 import java.util.Date;
 
 /**
@@ -15,6 +17,7 @@ public class DiceRollerState {
     SetSelection active_selection;
     List<SetSelection> roll_history;
     List<Date> roll_dates;
+    TreeMap<Integer, SumCountPair> per_dice_stats;
 
     SumCountPair dice_rolled;
     int num_rolls;
@@ -33,6 +36,7 @@ public class DiceRollerState {
         active_selection = new SetSelection();
         num_rolls = 0;
         dice_rolled = new SumCountPair();
+        per_dice_stats = new TreeMap<Integer, SumCountPair>();
     }
 
     public static void initialize() {
@@ -63,9 +67,23 @@ public class DiceRollerState {
         {
             for (Dice d : s)
             {
-                dice_rolled.count += d.count;
+                int dsum = d.sum();
+                int dcount = d.count;
+
+                dice_rolled.count += dcount;
+                dice_rolled.sum += dsum;
+
+                Integer key = new Integer(d.faces);
+                SumCountPair dice_stat = per_dice_stats.get(key);
+                if (dice_stat == null)
+                {
+                    dice_stat = new SumCountPair();
+                    dice_stat.faces = d.faces;
+                    per_dice_stats.put(key, dice_stat);
+                }
+                dice_stat.count += dcount;
+                dice_stat.sum += dsum;
             }
-            dice_rolled.sum += s.sum() - s.modifier;
         }
 
         // update history
@@ -92,20 +110,27 @@ public class DiceRollerState {
     public int getNumRolls() {
         return num_rolls;
     }
-}
 
-class SumCountPair {
-    int sum;
-    int count;
-
-    SumCountPair() {
-        sum = 0;
-        count = 0;
+    public List<SumCountPair> perDiceStats() {
+        return null;
     }
 
-    double avg() {
-        if (count == 0)
-            return 0;
-        return ((double) sum) / ((double) count);
+    public static class SumCountPair {
+        int faces;
+        int sum;
+        int count;
+
+        SumCountPair() {
+            sum = 0;
+            count = 0;
+            faces = 0;
+        }
+
+        double avg() {
+            if (count == 0)
+                return 0;
+            return ((double) sum) / ((double) count);
+        }
     }
 }
+
