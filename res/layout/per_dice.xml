@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false" >
+
+    <TextView
+        android:id="@+id/per_dice_face"
+        android:layout_weight="1"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/per_dice_count"
+        android:layout_weight="1"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/per_dice_avg"
+        android:layout_weight="1"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+</LinearLayout>
