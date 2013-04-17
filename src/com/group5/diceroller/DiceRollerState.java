@@ -1,7 +1,6 @@
 package com.group5.diceroller;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.Date;
@@ -111,8 +110,8 @@ public class DiceRollerState {
         return num_rolls;
     }
 
-    public List<SumCountPair> perDiceStats() {
-        return null;
+    public TreeMap<Integer, SumCountPair> perDiceStats() {
+        return per_dice_stats;
     }
 
     public static class SumCountPair {

@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ToggleButton;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -27,11 +27,17 @@ import android.app.Activity;
 public class StatisticsFragment extends Fragment {
     DiceRollerState state;
 
-    TextView no_statistics_message;
+    boolean rolls_visible = false;
+
     TextView avg_rolls;
     TextView num_rolls;
+    ListView per_dice_stats;
 
     ListView all_rolls;
+    View stats_view;
+    TextView no_statistics_message;
+    Button change_button;
+
     HistoryAdapter all_rolls_adapter;
 
     public static final String kTag = "StatisticsFrag";
@@ -58,6 +64,10 @@ public class StatisticsFragment extends Fragment {
 
         num_rolls = (TextView) layout.findViewById(R.id.num_rolls_val_text);
         avg_rolls = (TextView) layout.findViewById(R.id.avg_rolls_val_text);
+
+        stats_view = layout.findViewById(R.id.stats_view);
+        change_button = (Button) layout.findViewById(R.id.change_button);
+        change_button.setOnClickListener(new ChangeOnClickListener());
 
         update();
         return layout;
@@ -116,12 +126,20 @@ public class StatisticsFragment extends Fragment {
         boolean enable_button;
 
         if (state.rollHistory().size() > 0) {
+            enable_button = true;
             no_statistics_message.setVisibility(View.GONE);
-            all_rolls.setVisibility(View.VISIBLE);
-
+            change_button.setEnabled(true);
+            if (rolls_visible) {
+                all_rolls.setVisibility(View.VISIBLE);
+                stats_view.setVisibility(View.GONE);
+            } else {
+                all_rolls.setVisibility(View.GONE);
+                stats_view.setVisibility(View.VISIBLE);
+            }
         } else {
+            enable_button = false;
             no_statistics_message.setVisibility(View.VISIBLE);
-            all_rolls.setVisibility(View.GONE);
+            change_button.setEnabled(false);
         }
     }
 
@@ -135,6 +153,21 @@ public class StatisticsFragment extends Fragment {
         // update statistics views
         num_rolls.setText("" + state.getNumRolls());
         avg_rolls.setText(String.format("%.2f", state.getAvgRolls()));
+    }
+
+    class ChangeOnClickListener implements View.OnClickListener {
+        public void onClick(View v) {
+            if (rolls_visible) {
+                change_button.setText(getResources().getString(R.string.rolls));
+                all_rolls.setVisibility(View.VISIBLE);
+                stats_view.setVisibility(View.GONE);
+            } else {
+                change_button.setText(getResources().getString(R.string.stats));
+                all_rolls.setVisibility(View.GONE);
+                stats_view.setVisibility(View.VISIBLE);
+            }
+            rolls_visible = !rolls_visible;
+        }
     }
 
     /**
