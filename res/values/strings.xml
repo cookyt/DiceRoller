@@ -28,7 +28,7 @@
     <string name="per_dice_count">Number Rolled</string>
     <string name="per_dice_avg">Average</string>
     <string name="per_dice_face">Faces</string>
-    <string name="rolls">Rolls</string>
+    <string name="rolls">History</string>
     <string name="stats">Statistics</string>
 
 </resources>
