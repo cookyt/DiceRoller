@@ -108,7 +108,7 @@ two images:
 1. The [Lion][lionurl] is property of Ltshears, and is licenced under the
    [Creative Commons Attribution-Share Alike 3.0 Unported][lionlicence] license.
 2. The [Flame][flameurl] is property of Fir0002/Flagstaffotos, and is licensed under the
-   [Creative Commons Attribution-NonCommercial][flamelicese] license.
+   [Creative Commons Attribution-NonCommercial][flamelicense] license.
 
 
 [android]: http://developer.android.com/sdk/index.html
