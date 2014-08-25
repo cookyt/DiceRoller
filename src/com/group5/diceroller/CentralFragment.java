@@ -42,7 +42,8 @@ public class CentralFragment extends Fragment {
         try {
             rolled_listener = (OnDiceRolledListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnDiceRolledListener");
+            throw new ClassCastException(activity.toString() +
+                " must implement OnDiceRolledListener");
         }
 
         state = DiceRollerState.getState();
